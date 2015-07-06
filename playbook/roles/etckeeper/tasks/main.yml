@@ -21,14 +21,16 @@
   command: etckeeper vcs config --local user.email root@localhost
   when: etckeeper.changed
 
-- name: Ignore resolv.conf
+- name: Ignore some config files
   lineinfile: dest=/etc/.gitignore
-              line=resolv.conf
+              line={{ item }}
               state=present
+  with_items: "{{etckeeper_ignored}}"
   when: etckeeper.changed
 
-- name: Remove resolv.conf from git cache
-  command: etckeeper vcs rm --cached resolv.conf
+- name: Remove some config files from git cache
+  command: etckeeper vcs rm --cached {{ item }}
+  with_items: "{{etckeeper_ignored}}"
   when: etckeeper.changed
 
 - name: Initial etckeeper commit
