@@ -1,0 +1,36 @@
+---
+
+- name: Install etckeeper package
+  yum: name=etckeeper state=present
+
+- name: Disable autocommits
+  lineinfile: dest=/etc/etckeeper/etckeeper.conf
+              regexp=^#?{{ item }}=
+              line={{ item }}=1
+  with_items:
+   - AVOID_DAILY_AUTOCOMMITS
+   - AVOID_COMMIT_BEFORE_INSTALL
+
+- name: Prepare initial commit
+  command: etckeeper init
+  args:
+    creates: /etc/.git
+  register: etckeeper
+
+- name: Set user email for the repo
+  command: etckeeper vcs config --local user.email root@localhost
+  when: etckeeper.changed
+
+- name: Ignore resolv.conf
+  lineinfile: dest=/etc/.gitignore
+              line=resolv.conf
+              state=present
+  when: etckeeper.changed
+
+- name: Remove resolv.conf from git cache
+  command: etckeeper vcs rm --cached resolv.conf
+  when: etckeeper.changed
+
+- name: Initial etckeeper commit
+  command: etckeeper commit "initial commit"
+  when: etckeeper.changed
