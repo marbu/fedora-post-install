@@ -1,0 +1,23 @@
+---
+
+- name: Fedora workstation post-installation setup
+  hosts: 127.0.0.1
+  connection: local
+
+  vars:
+    update_forced: true
+
+  pre_tasks:
+
+   - name: Install libselinux-python (ansible requirement)
+     yum: name=libselinux-python state=present
+
+  roles:
+
+   - etckeeper
+
+  tasks:
+
+   - name: Update system
+     yum: name='*' state=latest
+     when: update_forced == true
