@@ -25,3 +25,53 @@
    - name: Update system
      yum: name='*' state=latest
      when: update_forced == true
+
+   - name: Install additional packages
+     yum: name={{ item }} state=present
+     with_items:
+      - vim
+      - gvim
+      - meld
+      - tmux
+      - htop
+      - vifm
+      - lshw
+      - acpi
+      - wget
+      - wipe
+      - mc
+      - terminator
+      - tmuxinator
+      - pandoc
+      - groovy
+      - ipython
+      - xmonad
+      - xmobar
+      - firefox
+      - thunderbird
+      - keepassx
+      - rxvt-unicode
+      - ruby
+      - ruby-irb
+      - thunderbird-lightning
+      - thunderbird-enigmail
+      - xmlstarlet
+      - jq
+      - tig
+      - gitk
+      - mutt
+      - pylint
+      - graphviz
+      - python-ctags
+      - epydoc
+      - python-requests
+      - mercurial
+      - darcs
+      - fedpkg
+      - audacity
+      - unoconv
+      - git-annex
+      - qstardict
+      - ShellCheck
+      - geeqie
+      - units
