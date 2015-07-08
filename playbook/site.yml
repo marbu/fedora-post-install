@@ -15,6 +15,10 @@
   roles:
 
    - etckeeper
+   - role: localuser
+     uid: 1000
+     login: martin
+     gecos: 'Martin B.'
 
   tasks:
 

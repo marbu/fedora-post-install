@@ -1,0 +1,6 @@
+---
+
+#uid: 1000
+gid: '{{ uid }}'
+#login: martin
+gecos: ''
