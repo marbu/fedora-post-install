@@ -50,7 +50,6 @@
       - rxvt-unicode
       - ruby
       - ruby-irb
-      - thunderbird-lightning
       - thunderbird-enigmail
       - xmlstarlet
       - jq
