@@ -1,7 +1,10 @@
 ---
 
-- name: Install etckeeper package
-  dnf: name=etckeeper state=present
+- name: Install etckeeper packages
+  dnf: name={{ item }} state=present
+  with_items:
+   - etckeeper
+   - etckeeper-dnf
 
 - name: Disable autocommits
   lineinfile: dest=/etc/etckeeper/etckeeper.conf
