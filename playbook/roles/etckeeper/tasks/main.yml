@@ -1,7 +1,7 @@
 ---
 
 - name: Install etckeeper package
-  yum: name=etckeeper state=present
+  dnf: name=etckeeper state=present
 
 - name: Disable autocommits
   lineinfile: dest=/etc/etckeeper/etckeeper.conf

@@ -10,7 +10,7 @@
   pre_tasks:
 
    - name: Install libselinux-python (ansible requirement)
-     yum: name=libselinux-python state=present
+     dnf: name=libselinux-python state=present
 
   roles:
 
@@ -19,11 +19,11 @@
   tasks:
 
    - name: Update system
-     yum: name='*' state=latest
+     dnf: name='*' state=latest
      when: update_forced == true
 
    - name: Install additional packages
-     yum: name={{ item }} state=present
+     dnf: name={{ item }} state=present
      with_items:
       - vim
       - gvim
