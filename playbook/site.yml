@@ -41,6 +41,7 @@
       - pandoc
       - groovy
       - ipython
+      - python3-ipython
       - xmonad
       - xmobar
       - firefox
