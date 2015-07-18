@@ -1,0 +1,19 @@
+---
+
+- name: Create group for martin
+  group: name=martin gid=1000 state=present
+
+- name: Create account for martin
+  user: name=martin
+        group=martin
+        uid=1000
+        home=/home/martin
+        createhome={{ users_createhome }}
+        shell=/bin/bash
+        comment='Martin B.'
+        state=present
+  register: user_created
+
+- name: Etckeeper commit
+  command: etckeeper commit "User account setup"
+  when: etckeeper_enabled == true and user_created.changed
