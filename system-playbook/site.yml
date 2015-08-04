@@ -1,4 +1,18 @@
 ---
-# file: site.yml
-- include: system.yml
-- include: users.yml
+
+- name: Fedora workstation post-installation system setup
+  hosts: 127.0.0.1
+  connection: local
+
+  pre_tasks:
+
+   - name: Install libselinux-python (ansible requirement)
+     dnf: name=libselinux-python state=present
+
+  roles:
+
+   - etckeeper
+   - role: fedora-common
+     update_forced: true
+   - role: users
+     users_createhome: false
