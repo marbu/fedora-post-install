@@ -1,0 +1,145 @@
+---
+
+#
+# Create user accounts
+#
+
+- name: Create martin group
+  group: name=martin gid=1000 state=present
+
+- name: Create martin account
+  user: name=martin
+        group=martin
+        groups=users
+        uid=1000
+        home=/home/martin
+        createhome={{ do_not_access_home_dir == false }}
+        shell=/bin/bash
+        comment='Martin B.'
+        state=present
+  register: user_martin_created
+
+- name: Etckeeper commit
+  command: etckeeper commit "user account setup"
+  when: etckeeper_enabled == true and user_martin_created.changed
+
+# TODO: other user accounts/groups
+
+#
+# Shared directory
+#
+
+- name: Create shared dir in /home
+  file: path=/home/shared state=directory
+        owner=root group=users mode=2755
+  when: do_not_access_home_dir == false
+
+- name: Create dirs in /home/shared
+  file: path=/home/shared/{{ item }} state=directory
+        owner=root group=users mode=3775
+  when: do_not_access_home_dir == false
+  with_items:
+   - documentaries
+   - images
+   - lectures
+   - movies
+   - music
+   - podcast
+   - series
+
+#
+# Local DNS server
+#
+
+- name: Enable local DNS server (networkmanager dnsmasq)
+  ini_file: dest=/etc/NetworkManager/NetworkManager.conf
+            section=main
+            option=dns
+            value=dnsmasq
+            state=present
+  register: local_dns
+  notify:
+   - restart networkmanager
+
+- name: Etckeeper commit
+  command: etckeeper commit "local DNS server - dnsmasq"
+  when: etckeeper_enabled == true and local_dns.changed
+
+#
+# Make dnf to ignore kernel package
+#
+
+- name: Configure dnf - ignore kernel package
+  ini_file: dest=/etc/dnf/dnf.conf
+            section=main
+            option=exclude
+            value=kernel*
+            state=present
+  register: dnf_config_exclude
+
+- name: Etckeeper commit
+  command: etckeeper commit "dnf - exclude kernel packages"
+  when: etckeeper_enabled == true and dnf_config_exclude.changed
+
+#
+# Configure iptables
+#
+
+#
+# Setup sshd
+#
+
+#
+# Additional packages
+#
+
+- name: Install additional packages
+  dnf: name={{ item }} state=present
+  with_items:
+   - vim
+   - gvim
+   - tmux
+   - vifm
+   - mc
+   - htop
+   - lshw
+   - acpi
+   - wget
+   - curl
+   - wipe
+   - ipython
+   - python3-ipython
+   - pylint
+   - python3-pylint
+   - python-requests
+   - python3-requests
+   - python-ctags
+   - xmlstarlet
+   - jq
+   - git
+   - git-annex
+   - tig
+   - gitk
+   - meld
+   - terminator
+   - tmuxinator
+   - pandoc
+   - groovy
+   - xmonad
+   - xmobar
+   - firefox
+   - thunderbird
+   - thunderbird-enigmail
+   - keepassx
+   - rxvt-unicode
+   - ruby
+   - ruby-irb
+   - mutt
+   - graphviz
+   - epydoc
+   - mercurial
+   - darcs
+   - fedpkg
+   - audacity
+   - unoconv
+   - qstardict

@@ -30,22 +30,3 @@
   dnf: name=http://linuxdownload.adobe.com/adobe-release/adobe-release-x86_64-1.0-1.noarch.rpm
        state=present
   when: ansible_architecture == "x86_64"
-
-- name: Install some basic tools
-  dnf: name={{ item }} state=present
-  with_items:
-   - vim
-   - tmux
-   - vifm
-   - mc
-   - htop
-   - lshw
-   - acpi
-   - wget
-   - curl
-   - wipe
-   - ipython
-   - python3-ipython
-   - xmlstarlet
-   - jq
-   - git

@@ -14,5 +14,5 @@
    - etckeeper
    - role: fedora-common
      update_forced: true
-   - role: users
-     users_createhome: false
+   - role: workstation
+     do_not_access_home_dir: false
