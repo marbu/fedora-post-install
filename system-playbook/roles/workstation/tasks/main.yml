@@ -82,8 +82,31 @@
   when: etckeeper_enabled == true and dnf_config_exclude.changed
 
 #
-# Configure iptables
+# Reconfigure iptables
 #
+
+# TODO: check if firewalld is installed and disable it
+#       wihout virtualization, openvpn or fail2ban I don't need it
+
+- name: Make sure iptables services are installed
+  dnf: name=iptables-services state=installed
+
+- name: Start iptables
+  service: name={{ item }} state=started
+  with_items:
+   - iptables
+   - ip6tables
+
+- name: Enable iptables
+  service: name={{ item }} enabled=yes
+  with_items:
+   - iptables
+   - ip6tables
+  register: enable_iptables
+
+- name: Etckeeper commit
+  command: etckeeper commit "enable iptables"
+  when: etckeeper_enabled == true and enable_iptables.changed
 
 #
 # Setup sshd
