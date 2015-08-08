@@ -85,8 +85,17 @@
 # Reconfigure iptables
 #
 
-# TODO: check if firewalld is installed and disable it
-#       wihout virtualization, openvpn or fail2ban I don't need it
+- name: Check if firewalld is installed
+  shell: rpm -q firewalld
+  ignore_errors: true
+  register: firewalld_check
+
+# When the system doesn't host libvirt virtual machines or run fail2ban,
+# I don't need firewalld.
+
+- name: Stop and disable firewalld
+  service: name=firewalld state=stopped enabled=no
+  when: firewalld_check.rc == 0
 
 - name: Make sure iptables services are installed
   dnf: name=iptables-services state=installed
