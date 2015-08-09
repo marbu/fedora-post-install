@@ -81,22 +81,6 @@
   when: etckeeper_enabled == true and local_dns.changed
 
 #
-# Make dnf to ignore kernel package
-#
-
-- name: Configure dnf - ignore kernel package
-  ini_file: dest=/etc/dnf/dnf.conf
-            section=main
-            option=exclude
-            value=kernel*
-            state=present
-  register: dnf_config_exclude
-
-- name: Etckeeper commit
-  command: etckeeper commit "dnf - exclude kernel packages"
-  when: etckeeper_enabled == true and dnf_config_exclude.changed
-
-#
 # Reconfigure iptables
 #
 
@@ -206,3 +190,19 @@
    - audacity
    - unoconv
    - qstardict
+
+#
+# Make dnf to ignore kernel package
+#
+
+- name: Configure dnf - ignore kernel package
+  ini_file: dest=/etc/dnf/dnf.conf
+            section=main
+            option=exclude
+            value=kernel*
+            state=present
+  register: dnf_config_exclude
+
+- name: Etckeeper commit
+  command: etckeeper commit "dnf - exclude kernel packages"
+  when: etckeeper_enabled == true and dnf_config_exclude.changed
