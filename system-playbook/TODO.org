@@ -1,0 +1,8 @@
+** roles
+*** TODO dnssec
+	[[https://fedoraproject.org/wiki/Features/DNSSEC]]
+*** TODO kdump
+	[[https://fedoraproject.org/wiki/How_to_use_kdump_to_debug_kernel_crashes]]
+*** TODO mpd
+*** TODO virtualization
+	will install and configure libvirt, guestfs tools
