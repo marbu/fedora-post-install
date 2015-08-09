@@ -107,13 +107,13 @@
 
 # When the system doesn't host libvirt virtual machines or run fail2ban,
 # I don't need firewalld.
+#
+- name: Make sure iptables services are installed
+  dnf: name=iptables-services state=installed
 
 - name: Stop and disable firewalld
   service: name=firewalld state=stopped enabled=no
   when: firewalld_check.rc == 0
-
-- name: Make sure iptables services are installed
-  dnf: name=iptables-services state=installed
 
 - name: Start iptables
   service: name={{ item }} state=started
