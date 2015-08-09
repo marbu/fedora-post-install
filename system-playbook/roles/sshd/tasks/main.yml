@@ -1,0 +1,44 @@
+---
+
+# note: this role doesn't touch iptables/firewalld
+
+- name: Make sure ssh server is installed
+  dnf: name=openssh-server state=installed
+
+- name: Enable sshd
+  service: name=sshd enabled=yes
+
+- name: Configure ssh daemon
+  lineinfile: dest=/etc/ssh/sshd_config
+              regexp='{{ item.exp }}'
+              line='{{ item.val }}'
+              state=present
+  with_items:
+   - exp: '^PasswordAuthentication'
+     val: 'PasswordAuthentication no'
+   - exp: '^#?HostbasedAuthentication'
+     val: 'HostbasedAuthentication no'
+   - exp: '^#?IgnoreRhosts'
+     val: 'IgnoreRhosts yes'
+   - exp: '^#?Protocol'
+     val: 'Protocol 2'
+   - exp: '^AllowUsers'
+     val: 'AllowUsers root martin'
+  register: sshd_conf
+  notify:
+    - restart sshd
+
+- name: Etckeeper commit
+  command: etckeeper commit "initial sshd configuration"
+  when: etckeeper_enabled == true and sshd_conf.changed
+
+- name: First start of sshd to generate keys
+  command: systemctl start sshd
+  args:
+    creates: /etc/ssh/ssh_host_rsa_key
+  register: sshd_host_key
+
+- name: Etckeeper commit
+  command: etckeeper commit "sshd key generation"
+  when: etckeeper_enabled == true and  sshd_host_key.changed
+
