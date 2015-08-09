@@ -8,3 +8,6 @@
   with_items:
    - iptables
    - ip6tables
+
+- name: restart sshd
+  service: name=sshd state=restarted
