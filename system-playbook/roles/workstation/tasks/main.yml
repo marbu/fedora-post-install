@@ -23,7 +23,21 @@
   command: etckeeper commit "user account setup"
   when: etckeeper_enabled == true and user_martin_created.changed
 
-# TODO: other user accounts/groups
+- name: Additional user accounts
+  user: name={{ item }}
+        group={{ item }}
+        createhome={{ do_not_access_home_dir == false }}
+        shell=/bin/bash
+        state=present
+  register: users_created
+  with_items:
+   - makerpm
+   - backup
+   - labrat
+
+- name: Etckeeper commit
+  command: etckeeper commit "add additional users"
+  when: etckeeper_enabled == true and users_created.changed
 
 #
 # Shared directory
