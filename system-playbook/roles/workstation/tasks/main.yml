@@ -23,6 +23,10 @@
   command: etckeeper commit "user account setup"
   when: etckeeper_enabled == true and user_martin_created.changed
 
+- name: Groups for additional user accounts
+  group: name={{ item }} state=present
+  with_items: "{{ additional_users }}"
+
 - name: Additional user accounts
   user: name={{ item }}
         group={{ item }}
@@ -30,10 +34,7 @@
         shell=/bin/bash
         state=present
   register: users_created
-  with_items:
-   - makerpm
-   - backup
-   - labrat
+  with_items: "{{ additional_users }}"
 
 - name: Etckeeper commit
   command: etckeeper commit "add additional users"
