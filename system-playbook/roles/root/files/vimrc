@@ -1,0 +1,58 @@
+"
+" core configuration
+"
+
+set nocompatible                   " just say no to the legacy vi craziness
+set encoding=utf-8                 " vim internal encoding (interface)
+set fileencodings=utf-8,iso8859-2  " expected encodings of files to open
+filetype plugin indent on          " load filetype plugins and indentations
+
+"
+" basic interface
+"
+
+syntax on                          " use syntax highlighting by default
+set showcmd                        " display incomplete commands (command mode)
+set ruler                          " show cursor position all the time
+set background=dark                " expect dark terminal emulator theme
+set tabstop=4                      " default tab size
+set shiftwidth=4                   " default (auto)indent size
+set backspace=indent,eol,start     " backspace through everything (insert mode)
+
+"
+" searching
+"
+
+set hlsearch     " highlight matches
+set incsearch    " incremental searching
+set ignorecase   " case insensitive searches ...
+set smartcase    " unless string to find contains at least one capital letter
+noremap ,f :noh<CR> " my shortcut: un-highligt search results
+
+"
+" text navigation
+"
+
+set wrap             " wrap lines by default
+set colorcolumn=80   " show vertical line on char 80
+
+"
+" filetype specific tweaks
+"
+
+" no syntax for xml files (since I need to edit _large_ xml files)
+"autocmd BufRead *.xml set syntax=off
+
+" limit max size of line for plaintext like files
+autocmd BufRead,BufNewFile *.txt      set textwidth=79
+autocmd BufRead,BufNewFile *.tex      set textwidth=79
+autocmd BufRead,BufNewFile *.md       set textwidth=79
+autocmd BufRead,BufNewFile *.markdown set textwidth=79
+
+"
+" others
+"
+
+" vim buffers switching
+map <F1> :args<cr>
+map <F2> :ls<CR>:b<Space>

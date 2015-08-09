@@ -1,0 +1,15 @@
+---
+
+- name: Create dirs in /root
+  file: path=/root/{{ item }} state=directory
+  with_items:
+   - bin
+   - tmp
+   - projects
+
+- name: Install core config files
+  copy: src={{ item }} dest="/root/.{{ item }}"
+  with_items:
+   - vimrc
+   - tmux.conf
+   - gitconfig

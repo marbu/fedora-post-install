@@ -15,5 +15,6 @@
    - role: fedora-common
      update_forced: true
    - sshd
+   - root
    - role: workstation
      do_not_access_home_dir: false

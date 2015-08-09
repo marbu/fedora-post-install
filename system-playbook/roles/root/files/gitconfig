@@ -1,0 +1,17 @@
+[user]
+  email = root@localhost
+  editor = vim
+[color]
+  ui = auto
+[merge]
+  tool = vimdiff
+[alias]
+  ci = commit
+  st = status -s
+  dc = diff --cached
+  df = diff
+  wh = whatchanged
+  rank = shortlog -sn --no-merges
+  graph = log --graph --oneline --decorate
+  tags = tag -n1 -l
+  root = rev-parse --show-toplevel
