@@ -1,0 +1,22 @@
+---
+
+- name: Fedora workstation post-installation system setup
+  hosts: 127.0.0.1
+  connection: local
+  vars:
+    etckeeper_enabled: false
+
+  pre_tasks:
+
+   - name: Install libselinux-python (ansible requirement)
+     dnf: name=libselinux-python state=present
+
+  roles:
+
+#   - etckeeper
+   - role: fedora-common
+     update_forced: true
+   - sshd
+   - root
+   - role: workstation
+     do_not_access_home_dir: false
