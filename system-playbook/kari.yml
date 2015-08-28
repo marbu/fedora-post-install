@@ -16,5 +16,6 @@
      update_forced: true
    - sshd
    - root
+   - lightdm
    - role: workstation
      do_not_access_home_dir: false
