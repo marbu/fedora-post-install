@@ -24,3 +24,30 @@
 # may fail, so commenting this out
 #- name: Start lightdm
 #  service: name=lightdm state=started
+
+- name: Disable guest login
+  lineinfile: dest=/etc/lightdm/lightdm.conf
+              regexp='^#? ?allow-guest ?='
+              line='allow-guest = false'
+              state=present
+  register: lightdm_conf
+
+- name: Etckeeper commit
+  command: etckeeper commit "lightdm; disable guest login"
+  when: etckeeper_enabled == true and lightdm_conf.changed
+
+- name: Show manual login box
+  lineinfile: dest=/etc/lightdm/lightdm.conf
+              regexp='{{ item.exp }}'
+              line='{{ item.val }}'
+              state=present
+  with_items:
+   - exp: '^#? ?greeter-hide-users ?='
+     val: 'greeter-hide-users = true'
+   - exp: '^#? ?greeter-show-manual-login ?='
+     val: 'greeter-show-manual-login = true'
+  register: lightdm_conf
+
+- name: Etckeeper commit
+  command: etckeeper commit "lightdm; manual login"
+  when: etckeeper_enabled == true and lightdm_conf.changed
