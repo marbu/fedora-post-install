@@ -192,6 +192,8 @@
    - audacity
    - unoconv
    - qstardict
+   - libappindicator
+   - libappindicator-gtk3
 
 #
 # Make dnf to ignore kernel package
