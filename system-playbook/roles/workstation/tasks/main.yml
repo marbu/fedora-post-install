@@ -194,6 +194,8 @@
    - qstardict
    - libappindicator
    - libappindicator-gtk3
+   - xscreensaver
+   - pavucontrol
 
 #
 # Make dnf to ignore kernel package
