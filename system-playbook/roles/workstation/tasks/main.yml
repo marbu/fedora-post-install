@@ -196,6 +196,7 @@
    - libappindicator-gtk3
    - xscreensaver
    - pavucontrol
+   - geeqie
 
 #
 # Make dnf to ignore kernel package
