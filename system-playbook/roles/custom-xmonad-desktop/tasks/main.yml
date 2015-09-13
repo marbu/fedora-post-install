@@ -1,0 +1,37 @@
+---
+
+- name: Install packages
+  dnf: name={{ item }} state=present
+  with_items:
+    - xmonad
+    - xmobar
+    - rxvt-unicode
+    - xloadimage
+    - xscreensaver
+    - pmount
+    - pavucontrol
+
+- name: Make Xsession souce ~/.xprofile script (BZ 845339 workaround)
+  patch:
+     src=roles/custom-xmonad-desktop/files/bz845339-hack.patch
+     dest=/etc/X11/xinit/Xsession
+  register: xsession_hack
+
+- name: Etckeeper commit
+  command: etckeeper commit "BZ 845339 workaround (Xsession loads ~/.xprofile)"
+  when: etckeeper_enabled == true and xsession_hack.changed
+
+# TODO: make it more general, maybe use xuserrun or some systemd hack?
+# https://wiki.archlinux.org/index.php/XScreenSaver
+- name: Service xscreensaver-lock (lock screen before sleep or suspend)
+  template:
+    src=xscreensaver-lock.service
+    dest=/etc/systemd/system/xscreensaver-lock.service
+
+- name: Enable xscreensaver-lock
+  service: name=xscreensaver-lock enabled=yes
+  register: xscreensaver_lock
+
+- name: Etckeeper commit
+  command: etckeeper commit "xscreensaver-lock hack"
+  when: etckeeper_enabled == true and xscreensaver_lock.changed

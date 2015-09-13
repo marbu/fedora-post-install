@@ -1,0 +1,8 @@
+@@ -72,6 +72,7 @@ case $# in
+        # provides 'failsafe', 'default' or 'custom'.  KDM will do the
+        # same at some point
+ 	    if [ "$1" != "default" -a "$1" != "custom" ]; then
++		[ -f $HOME/.xprofile ] && . $HOME/.xprofile
+ 		exec $CK_XINIT_SESSION $SSH_AGENT /bin/sh -c "exec -l $SHELL -c \"$1\""
+ 	    fi
+ 	    ;;
