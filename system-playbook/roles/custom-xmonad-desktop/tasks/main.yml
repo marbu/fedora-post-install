@@ -5,11 +5,14 @@
   with_items:
     - xmonad
     - xmobar
+    - dmenu
     - rxvt-unicode
     - xloadimage
+    - xbacklight
     - xscreensaver
     - pmount
     - pavucontrol
+    - alsa-utils
 
 - name: Make Xsession souce ~/.xprofile script (BZ 845339 workaround)
   patch:
