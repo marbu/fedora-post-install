@@ -184,6 +184,11 @@
    - ruby
    - ruby-irb
    - mutt
+   - notmuch-mutt
+   - abook
+   - goobook
+   - msmtp
+   - offlineimap
    - graphviz
    - epydoc
    - mercurial
