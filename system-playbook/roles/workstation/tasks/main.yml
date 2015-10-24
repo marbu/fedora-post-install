@@ -202,6 +202,9 @@
    - xscreensaver
    - pavucontrol
    - geeqie
+   - nmap
+   - tigervnc
+   - ddrescue
 
 #
 # Make dnf to ignore kernel package
