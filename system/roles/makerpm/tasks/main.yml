@@ -29,6 +29,11 @@
    - rpmdevtools
    - rpm-sign
    - fedpkg
+   - python-copr
+   - python3-copr
+   - python-copr-doc
+   - copr-cli
+   - copr-cli-doc
 
 - name: Create initial rpmbuild tree
   command: runuser -u makerpm rpmdev-setuptree
