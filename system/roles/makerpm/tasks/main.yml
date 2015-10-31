@@ -27,6 +27,7 @@
    - "@development-tools"
    - fedora-packager
    - rpmdevtools
+   - rpm-sign
    - fedpkg
 
 - name: Create initial rpmbuild tree
