@@ -1,0 +1,57 @@
+---
+
+#
+# https://fedoraproject.org/wiki/How_to_create_an_RPM_package
+#
+
+- name: Create makerpm group
+  group: name=makerpm state=present
+
+- name: Create makerpm user
+  user:
+    name=makerpm
+    group=makerpm
+    groups=mock
+    createhome={{ do_not_access_home_dir == false }}
+    shell=/bin/bash
+    state=present
+  register: user_created
+
+- name: Etckeeper commit
+  command: etckeeper commit "create makerpm user account"
+  when: etckeeper_enabled == true and user_created.changed
+
+- name: Install development tools
+  dnf: name={{ item }} state=present
+  with_items:
+   - "@development-tools"
+   - fedora-packager
+   - rpmdevtools
+   - fedpkg
+
+- name: Create initial rpmbuild tree
+  command: runuser -u makerpm rpmdev-setuptree
+  args:
+    creates: /home/makerpm/rpmbuild
+  when: do_not_access_home_dir == false
+
+- name: Generate ssh key for makerpm user
+  user:
+    name=makerpm
+    generate_ssh_key=yes
+  when: do_not_access_home_dir == false
+
+- name: Make sure wget config file exists
+  file:
+    path=/home/makerpm/.wgetrc
+    owner=makerpm
+    group=makerpm
+    state=touch
+  when: do_not_access_home_dir == false
+
+- name: Configure wget
+  lineinfile:
+    dest=/home/makerpm/.wgetrc
+    state=present
+    line="timestamping = on"
+  when: do_not_access_home_dir == false
