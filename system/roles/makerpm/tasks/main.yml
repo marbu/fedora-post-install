@@ -4,6 +4,21 @@
 # https://fedoraproject.org/wiki/How_to_create_an_RPM_package
 #
 
+- name: Install development tools
+  dnf: name={{ item }} state=present
+  with_items:
+   - "@development-tools"
+   - fedora-packager
+   - rpmdevtools
+   - rpm-sign
+   - fedpkg
+   - python-copr
+   - python3-copr
+   - python-copr-doc
+   - copr-cli
+   - copr-cli-doc
+   - wget
+
 - name: Create makerpm group
   group: name=makerpm state=present
 
@@ -20,20 +35,6 @@
 - name: Etckeeper commit
   command: etckeeper commit "create makerpm user account"
   when: etckeeper_enabled == true and user_created.changed
-
-- name: Install development tools
-  dnf: name={{ item }} state=present
-  with_items:
-   - "@development-tools"
-   - fedora-packager
-   - rpmdevtools
-   - rpm-sign
-   - fedpkg
-   - python-copr
-   - python3-copr
-   - python-copr-doc
-   - copr-cli
-   - copr-cli-doc
 
 - name: Create initial rpmbuild tree
   command: runuser -u makerpm rpmdev-setuptree
