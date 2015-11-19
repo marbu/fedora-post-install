@@ -4,6 +4,11 @@
 # https://docs.fedoraproject.org/en-US/Fedora/22/html/Installation_Guide/sect-common-post-installation-tasks.html
 #
 
+- name: Check that we run on Fedora
+  assert:
+    that:
+      - '"{{ ansible_distribution }}" == "Fedora"'
+
 - name: Update system
   dnf: name='*' state=latest
   when: update_forced == true
