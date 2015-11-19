@@ -11,22 +11,17 @@
 - name: Import rpm-gpg keys of additional yum repos
   rpm_key: state=present key='roles/fedora-common/files/{{ item }}'
   with_items:
-   - RPM-GPG-KEY-rpmfusion-free-fedora-22-primary
-   - RPM-GPG-KEY-rpmfusion-nonfree-fedora-22-primary
+   - RPM-GPG-KEY-rpmfusion-free-fedora-{{ ansible_distribution_major_version }}-primary
+   - RPM-GPG-KEY-rpmfusion-nonfree-fedora-{{ ansible_distribution_major_version }}-primary
    - RPM-GPG-KEY-adobe-linux
 
 - name: Install rpmfusion free and nonfree repos
   dnf: name={{ item }} state=present
   with_items:
-   - http://download1.rpmfusion.org/free/fedora/rpmfusion-free-release-22.noarch.rpm
-   - http://download1.rpmfusion.org/nonfree/fedora/rpmfusion-nonfree-release-22.noarch.rpm
+   - http://download1.rpmfusion.org/free/fedora/rpmfusion-free-release-{{ ansible_distribution_major_version }}.noarch.rpm
+   - http://download1.rpmfusion.org/nonfree/fedora/rpmfusion-nonfree-release-{{ ansible_distribution_major_version }}.noarch.rpm
 
-- name: Install adobe-linux i386 repo
-  dnf: name=http://linuxdownload.adobe.com/adobe-release/adobe-release-i386-1.0-1.noarch.rpm
-       state=present
-  when: ansible_architecture == "i686"
-
-- name: Install adobe-linux x86_64 repo
-  dnf: name=http://linuxdownload.adobe.com/adobe-release/adobe-release-x86_64-1.0-1.noarch.rpm
-       state=present
-  when: ansible_architecture == "x86_64"
+- name: Install adobe-linux repo
+  dnf:
+    name=http://linuxdownload.adobe.com/adobe-release/adobe-release-{{ ansible_userspace_architecture }}-1.0-1.noarch.rpm
+    state=present
