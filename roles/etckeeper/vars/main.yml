@@ -1,3 +1,8 @@
 ---
 etckeeper_enabled: true
-etckeeper_ignored: ['resolv.conf']
+etckeeper_ignored:
+ - 'resolv.conf'
+ - 'cups/printers.conf'
+ - 'cups/printers.conf.O'
+ - 'printcap'
+ - 'ntp.conf'
