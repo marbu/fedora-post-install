@@ -1,13 +1,15 @@
 ---
 
 - name: Custom xmonad desktop for machine with etckeeper
-  hosts: 127.0.0.1
+  hosts: localhost
   connection: local
   vars:
     etckeeper_enabled: true
 
   roles:
 
+   - etckeeper
+   - fedora-common
    - lightdm
    - role: custom-xmonad-desktop
      xscreensaver_lock_username: martin
