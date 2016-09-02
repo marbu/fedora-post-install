@@ -13,20 +13,44 @@
   dnf: name='*' state=latest
   when: update_forced == true
 
-- name: Import rpm-gpg keys of additional yum repos
-  rpm_key: state=present key='roles/fedora-common/files/{{ item }}'
-  with_items:
-   - RPM-GPG-KEY-rpmfusion-free-fedora-{{ ansible_distribution_major_version }}-primary
-   - RPM-GPG-KEY-rpmfusion-nonfree-fedora-{{ ansible_distribution_major_version }}-primary
-   - RPM-GPG-KEY-adobe-linux
+#
+# http://rpmfusion.org/keys
+#
 
-- name: Install rpmfusion free and nonfree repos
-  dnf: name={{ item }} state=present
-  with_items:
-   - http://download1.rpmfusion.org/free/fedora/rpmfusion-free-release-{{ ansible_distribution_major_version }}.noarch.rpm
-   - http://download1.rpmfusion.org/nonfree/fedora/rpmfusion-nonfree-release-{{ ansible_distribution_major_version }}.noarch.rpm
+- name: Import rpm-gpg key of rpmfusion free repo
+  rpm_key:
+    state=present
+    key='roles/fedora-common/files/RPM-GPG-KEY-rpmfusion-free-fedora-{{ ansible_distribution_major_version }}-primary'
 
-- name: Install adobe-linux repo
+- name: Import rpm-gpg key of rpmfusion nonfree repo
+  rpm_key:
+    state=present
+    key='roles/fedora-common/files/RPM-GPG-KEY-rpmfusion-nonfree-fedora-{{ ansible_distribution_major_version }}-primary'
+  when: addrepo_rpmfusion_nonfree == true
+
+- name: Import rpm-gpg key of adobe linux repo
+  rpm_key:
+    state=present
+    key='roles/fedora-common/files/RPM-GPG-KEY-adobe-linux'
+  when: addrepo_adobe == true
+
+#
+# http://rpmfusion.org/Configuration
+#
+
+- name: Install rpmfusion free repo
+  dnf:
+    name=http://download1.rpmfusion.org/free/fedora/rpmfusion-free-release-{{ ansible_distribution_major_version }}.noarch.rpm
+    state=present
+
+- name: Install rpmfusion nonfree repo
+  dnf:
+    name=http://download1.rpmfusion.org/nonfree/fedora/rpmfusion-nonfree-release-{{ ansible_distribution_major_version }}.noarch.rpm
+    state=present
+  when: addrepo_rpmfusion_nonfree == true
+
+- name: Install adobe linux repo
   dnf:
     name=http://linuxdownload.adobe.com/adobe-release/adobe-release-{{ ansible_userspace_architecture }}-1.0-1.noarch.rpm
     state=present
+  when: addrepo_adobe == true

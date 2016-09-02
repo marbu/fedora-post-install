@@ -1,2 +1,4 @@
 ---
 update_forced: false
+addrepo_rpmfusion_nonfree: false
+addrepo_adobe: false
