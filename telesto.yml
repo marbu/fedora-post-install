@@ -8,8 +8,6 @@
 
   roles:
 
-   - etckeeper
-   - fedora-common
    - lightdm
    - role: custom-xmonad-desktop
      xscreensaver_lock_username: martin
