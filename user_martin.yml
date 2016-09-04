@@ -2,7 +2,7 @@
 # Warning: this playbook may delete your data so don't ignore the assert!
 
 - name: Initial setup of martin user account
-  hosts: 127.0.0.1
+  hosts: localhost
   connection: local
   vars:
     default_dirs:

@@ -1,7 +1,7 @@
 ---
 
 - name: Fedora workstation post-installation system setup
-  hosts: 127.0.0.1
+  hosts: localhost
   connection: local
 
   pre_tasks:

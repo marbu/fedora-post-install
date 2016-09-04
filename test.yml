@@ -1,6 +1,6 @@
 ---
 - name: Dev playbook to test new roles
-  hosts: 127.0.0.1
+  hosts: localhost
   connection: local
   vars:
     etckeeper_enabled: true
