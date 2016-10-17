@@ -158,8 +158,6 @@
    - python3-ipython
    - pylint
    - python3-pylint
-   - python-requests
-   - python3-requests
    - python-ctags
    - xmlstarlet
    - jq
