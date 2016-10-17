@@ -14,6 +14,9 @@
     - pavucontrol
     - alsa-utils
 
+- name: Make sure patch is installed
+  dnf: name=patch state=present
+
 - name: Make Xsession souce ~/.xprofile script (BZ 845339 workaround)
   patch:
      src=roles/custom-xmonad-desktop/files/bz845339-hack.patch
