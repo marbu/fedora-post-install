@@ -13,10 +13,12 @@
 
   roles:
 
-#   - etckeeper
    - role: fedora-common
-     update_forced: true
+     update_forced: false
    - sshd
    - root
+   - lightdm
+   - role: custom-xmonad-desktop
+     xscreensaver_lock_username: martin
    - role: workstation
-     do_not_access_home_dir: false
+     do_not_access_home_dir: true
