@@ -33,6 +33,7 @@
 
 - name: Remove some config files from git cache
   command: etckeeper vcs rm --cached {{ item }}
+  ignore_errors: yes
   with_items: "{{etckeeper_ignored}}"
   when: etckeeper.changed
 
