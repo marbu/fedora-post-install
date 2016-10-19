@@ -19,6 +19,8 @@
    - lightdm
    - role: custom-xmonad-desktop
      xscreensaver_lock_username: martin
+   - role: users
+     do_not_access_home_dir: false
    - role: makerpm
      do_not_access_home_dir: false
    - role: workstation
