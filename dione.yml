@@ -1,0 +1,28 @@
+---
+
+- name: Fedora workstation post-installation system setup
+  hosts: localhost
+  connection: local
+  vars:
+    do_not_access_home_dir: false
+    firewall_type: firewalld
+
+  pre_tasks:
+
+   - name: Install libselinux-python (ansible requirement)
+     dnf: name=libselinux-python state=present
+
+  roles:
+
+   - etckeeper
+   - role: fedora-common
+     update_forced: true
+   - firewall
+   - sshd
+   - user-root
+   - lightdm
+   - role: custom-xmonad-desktop
+     xscreensaver_lock_username: martin
+   - users
+   - user-makerpm
+   - workstation
