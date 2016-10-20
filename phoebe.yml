@@ -16,7 +16,7 @@
    - role: fedora-common
      update_forced: false
    - sshd
-   - root
+   - user-root
    - lightdm
    - role: custom-xmonad-desktop
      xscreensaver_lock_username: martin
