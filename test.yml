@@ -4,5 +4,6 @@
   connection: local
   vars:
     etckeeper_enabled: true
+    do_not_access_home_dir: true
   roles:
    - TODO

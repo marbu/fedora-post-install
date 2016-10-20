@@ -5,6 +5,7 @@
   connection: local
   vars:
     etckeeper_enabled: false
+    do_not_access_home_dir: true
 
   pre_tasks:
 
@@ -20,7 +21,5 @@
    - lightdm
    - role: custom-xmonad-desktop
      xscreensaver_lock_username: martin
-   - role: users
-     do_not_access_home_dir: true
-   - role: workstation
-     do_not_access_home_dir: true
+   - users
+   - workstation
