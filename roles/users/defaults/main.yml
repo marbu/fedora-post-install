@@ -1,4 +1,5 @@
 ---
+do_not_access_home_dir: false
 additional_users:
  - backup
  - labrat
