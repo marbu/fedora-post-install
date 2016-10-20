@@ -1,0 +1,3 @@
+This role just makes sure that either firewalld or iptables is up and running.
+It's used as a dependency of other roles which need to update firewall
+configuration to check which firewall type (firewalld vs iptables) is used.

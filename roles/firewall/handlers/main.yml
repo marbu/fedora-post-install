@@ -1,0 +1,7 @@
+---
+
+- name: restart iptables
+  service: name={{ item }} state=restarted
+  with_items:
+   - iptables
+   - ip6tables

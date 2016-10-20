@@ -6,6 +6,7 @@
   vars:
     etckeeper_enabled: false
     do_not_access_home_dir: true
+    firewall_type: iptables
 
   pre_tasks:
 
@@ -16,6 +17,7 @@
 
    - role: fedora-common
      update_forced: false
+   - firewall
    - sshd
    - user-root
    - lightdm

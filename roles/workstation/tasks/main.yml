@@ -19,62 +19,6 @@
   when: etckeeper_enabled == true and local_dns.changed
 
 #
-# Reconfigure iptables
-#
-
-- name: Check if firewalld is installed
-  shell: rpm -q firewalld
-  ignore_errors: true
-  register: firewalld_check
-
-# When the system doesn't host libvirt virtual machines or run fail2ban,
-# I don't need firewalld.
-#
-- name: Make sure iptables services are installed
-  dnf: name=iptables-services state=installed
-
-- name: Stop and disable firewalld
-  service: name=firewalld state=stopped enabled=no
-  when: firewalld_check.rc == 0
-
-- name: Start iptables
-  service: name={{ item }} state=started
-  with_items:
-   - iptables
-   - ip6tables
-
-- name: Enable iptables
-  service: name={{ item }} enabled=yes
-  with_items:
-   - iptables
-   - ip6tables
-  register: enable_iptables
-
-- name: Etckeeper commit
-  command: etckeeper commit "enable iptables"
-  when: etckeeper_enabled == true and enable_iptables.changed
-
-#
-# Setup sshd
-#
-
-- name: Configure iptables to allow sshd (just to be sure)
-  lineinfile: dest=/etc/sysconfig/{{ item }}
-              line='-A INPUT -p tcp -m state --state NEW -m tcp --dport 22 -j ACCEPT'
-              insertbefore='^COMMIT'
-              state=present
-  register: sshd_iptables
-  with_items:
-   - iptables
-   - ip6tables
-  notify:
-    - restart iptables
-
-- name: Etckeeper commit
-  command: etckeeper commit "iptables - enable sshd"
-  when: etckeeper_enabled == true and sshd_iptables.changed
-
-#
 # Additional packages
 #
 

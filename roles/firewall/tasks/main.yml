@@ -1,0 +1,55 @@
+---
+
+#
+# firewalld (fedora default)
+#
+
+- name: Install firewalld
+  dnf: name=firewalld state=installed
+  when: firewall_type == "firewalld"
+
+- name: Start and enable firewalld
+  service:
+    name=firewalld
+    state=started
+    enabled=yes
+  register: enable_firewalld
+  when: firewall_type == "firewalld"
+
+- name: Etckeeper commit
+  command: etckeeper commit "enable firewalld"
+  when: etckeeper_enabled == true and enable_firewalld.changed
+
+#
+# iptables
+#
+
+- name: Install iptables services
+  dnf: name=iptables-services state=installed
+  when: firewall_type == "iptables"
+
+- name: Stop and disable firewalld
+  service:
+    name=firewalld
+    state=stopped
+    enabled=no
+  when: firewall_type == "iptables"
+
+- name: Start iptables
+  service: name={{ item }} state=started
+  with_items:
+   - iptables
+   - ip6tables
+  when: firewall_type == "iptables"
+
+- name: Enable iptables
+  service: name={{ item }} enabled=yes
+  with_items:
+   - iptables
+   - ip6tables
+  register: enable_iptables
+  when: firewall_type == "iptables"
+
+- name: Etckeeper commit
+  command: etckeeper commit "enable iptables"
+  when: etckeeper_enabled == true and enable_iptables.changed

@@ -1,0 +1,3 @@
+---
+# use either firewalld or iptables as a value here
+firewall_type: firewalld

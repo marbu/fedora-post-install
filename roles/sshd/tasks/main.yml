@@ -1,6 +1,8 @@
 ---
 
-# note: this role doesn't touch iptables/firewalld
+#
+# sshd setup
+#
 
 - name: Make sure ssh server is installed
   dnf: name=openssh-server state=installed
@@ -42,3 +44,33 @@
   command: etckeeper commit "sshd key generation"
   when: etckeeper_enabled == true and  sshd_host_key.changed
 
+#
+# firewall setup
+#
+
+- name: Open ssh port in iptables
+  lineinfile:
+    dest=/etc/sysconfig/{{ item }}
+    line='-A INPUT -p tcp -m state --state NEW -m tcp --dport 22 -j ACCEPT'
+    insertbefore='^COMMIT'
+    state=present
+  with_items:
+   - iptables
+   - ip6tables
+  notify:
+    - restart iptables
+  register: sshd_iptables
+  when: firewall_type == "iptables"
+
+- name: Etckeeper commit
+  command: etckeeper commit "iptables - enable sshd"
+  when: etckeeper_enabled == true and sshd_iptables.changed
+
+- name: Open ssh port in firewalld
+  firewalld: service=ssh permanent=true immediate=true state=enabled
+  register: sshd_firewalld
+  when: firewall_type == "firewalld"
+
+- name: Etckeeper commit
+  command: etckeeper commit "iptables - enable sshd"
+  when: etckeeper_enabled == true and sshd_firewalld.changed
