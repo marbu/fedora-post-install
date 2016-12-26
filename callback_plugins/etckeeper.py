@@ -107,7 +107,9 @@ class CallbackModule(CallbackBase):
         if self._do_nothing():
             return
         if result.is_changed():
-            msg = result._task.name
+            msg = "{0}\n\n{1}".format(
+                result._task.name,
+                "Committing changes in /etc after successful ansible task.")
             retcode = subprocess.call(['etckeeper', 'commit', msg])
             print("etckeeper retcode:", retcode)
         elif etckeeper_unclean():
