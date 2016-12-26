@@ -59,12 +59,59 @@ class CallbackModule(CallbackBase):
         self._etckeeper_installed = \
             subprocess.call(['rpm', '-q', 'etckeeper']) == 0
         self._etckeeper_initialized = os.path.exists('/etc/.etckeeper')
-        # when etckeeper is not installed or initialized, don't do anything
-        if not self._etckeeper_installed or not self._etckeeper_initialized:
+        # make ansible immeditally fail when uncommited changes are detected
+        self._on_start()
+
+    def _do_nothing(self):
+        """
+        Return True when the plugin is expected to do nothing.
+
+        Reasoning: loading this plugin should not break ansible functionality
+        when etckeeper is either not installed or not configured.
+        """
+        return not self._etckeeper_installed or not self._etckeeper_initialized
+
+    #
+    # start callbacks
+    #
+
+    def _on_start(self):
+        if self._do_nothing():
             return
         # when etckeeper repo contains uncommited changes, stop right there
         if etckeeper_unclean():
             raise Exception("etckeeper repository is unclean")
 
-    def v2_on_any(self, *args, **kwargs):
-        print("plugin: v2_on_any")
+    def v2_playbook_on_start(self, playbook):
+        self._on_start()
+
+    def v2_playbook_on_play_start(self, play):
+        self._on_start()
+
+    def v2_playbook_on_task_start(self, task, is_conditional):
+        self._on_start()
+
+    def v2_playbook_on_handler_task_start(self, task):
+        self._on_start()
+
+    #
+    # result callbacks
+    #
+
+    def v2_runner_on_failed(self, result, ignore_errors=False):
+        # keep any changes uncommited
+        pass
+
+    def v2_runner_on_ok(self, result):
+        if self._do_nothing():
+            return
+        if result.is_changed():
+            msg = result._task.name
+            retcode = subprocess.call(['etckeeper', 'commit', msg])
+            print("etckeeper retcode:", retcode)
+        elif etckeeper_unclean():
+            msg = (
+                "etckeeper repository is unclean "
+                "(there are uncommited changes in /etc repository), "
+                "but the task result is 'ok' (unchanged)")
+            raise Exception(msg)
