@@ -7,13 +7,9 @@
     do_not_access_home_dir: false
     firewall_type: iptables
 
-  pre_tasks:
-
-   - name: Install libselinux-python (ansible requirement)
-     dnf: name=libselinux-python state=present
-
   roles:
 
+   - fedora-ansible-dependencies
    - etckeeper
    - role: fedora-common
      update_forced: true

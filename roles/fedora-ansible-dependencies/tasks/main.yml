@@ -1,0 +1,11 @@
+---
+
+# based on https://fedoramagazine.org/getting-ansible-working-fedora-23/
+# but for local usage only
+
+# TODO: run only when the package is not installed (to avoid changed state)
+- name: Install python2-dnf
+  command: dnf install -y python2-dnf
+
+- name: Install libselinux-python
+  dnf: name=libselinux-python state=present
