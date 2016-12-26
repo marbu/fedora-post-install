@@ -79,7 +79,7 @@ class CallbackModule(CallbackBase):
     def _on_start(self):
         if self._do_nothing():
             return
-        # when etckeeper repo contains uncommited changes, stop right there
+        # when etckeeper repo contains uncommited changes, show a warning
         if etckeeper_unclean():
             raise Exception("etckeeper repository is unclean")
 
