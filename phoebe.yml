@@ -4,7 +4,6 @@
   hosts: localhost
   connection: local
   vars:
-    etckeeper_enabled: false
     do_not_access_home_dir: true
     firewall_type: iptables
 

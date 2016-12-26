@@ -10,13 +10,8 @@
             option=dns
             value=dnsmasq
             state=present
-  register: local_dns
   notify:
    - restart networkmanager
-
-- name: Etckeeper commit
-  command: etckeeper commit "local DNS server - dnsmasq"
-  when: etckeeper_enabled == true and local_dns.changed
 
 #
 # Additional packages

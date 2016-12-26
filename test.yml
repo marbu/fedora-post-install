@@ -3,7 +3,6 @@
   hosts: localhost
   connection: local
   vars:
-    etckeeper_enabled: true
     do_not_access_home_dir: true
     firewall_type: firewalld
   roles:

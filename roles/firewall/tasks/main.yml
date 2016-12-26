@@ -13,12 +13,7 @@
     name=firewalld
     state=started
     enabled=yes
-  register: enable_firewalld
   when: firewall_type == "firewalld"
-
-- name: Etckeeper commit
-  command: etckeeper commit "enable firewalld"
-  when: etckeeper_enabled == true and enable_firewalld.changed
 
 #
 # iptables
@@ -47,9 +42,4 @@
   with_items:
    - iptables
    - ip6tables
-  register: enable_iptables
   when: firewall_type == "iptables"
-
-- name: Etckeeper commit
-  command: etckeeper commit "enable iptables"
-  when: etckeeper_enabled == true and enable_iptables.changed

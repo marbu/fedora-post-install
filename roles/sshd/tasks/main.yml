@@ -26,23 +26,13 @@
      val: 'Protocol 2'
    - exp: '^AllowUsers'
      val: 'AllowUsers root martin'
-  register: sshd_conf
   notify:
     - restart sshd
-
-- name: Etckeeper commit
-  command: etckeeper commit "initial sshd configuration"
-  when: etckeeper_enabled == true and sshd_conf.changed
 
 - name: First start of sshd to generate keys
   command: systemctl start sshd
   args:
     creates: /etc/ssh/ssh_host_rsa_key
-  register: sshd_host_key
-
-- name: Etckeeper commit
-  command: etckeeper commit "sshd key generation"
-  when: etckeeper_enabled == true and  sshd_host_key.changed
 
 #
 # firewall setup
@@ -59,18 +49,8 @@
    - ip6tables
   notify:
     - restart iptables
-  register: sshd_iptables
   when: firewall_type == "iptables"
-
-- name: Etckeeper commit
-  command: etckeeper commit "iptables - enable sshd"
-  when: etckeeper_enabled == true and sshd_iptables.changed
 
 - name: Open ssh port in firewalld
   firewalld: service=ssh permanent=true immediate=true state=enabled
-  register: sshd_firewalld
   when: firewall_type == "firewalld"
-
-- name: Etckeeper commit
-  command: etckeeper commit "iptables - enable sshd"
-  when: etckeeper_enabled == true and sshd_firewalld.changed

@@ -12,11 +12,6 @@
 
 - name: Enable lightdm
   service: name=lightdm enabled=yes
-  register: enable_lightdm
-
-- name: Etckeeper commit
-  command: etckeeper commit "enable lightdm"
-  when: etckeeper_enabled == true and enable_lightdm.changed
 
 - name: Stop sddm
   service: name=sddm state=stopped
@@ -30,11 +25,6 @@
               regexp='^#? ?allow-guest ?='
               line='allow-guest = false'
               state=present
-  register: lightdm_conf
-
-- name: Etckeeper commit
-  command: etckeeper commit "lightdm; disable guest login"
-  when: etckeeper_enabled == true and lightdm_conf.changed
 
 - name: Show manual login box
   lineinfile: dest=/etc/lightdm/lightdm.conf
@@ -46,8 +36,3 @@
      val: 'greeter-hide-users = true'
    - exp: '^#? ?greeter-show-manual-login ?='
      val: 'greeter-show-manual-login = true'
-  register: lightdm_conf
-
-- name: Etckeeper commit
-  command: etckeeper commit "lightdm; manual login"
-  when: etckeeper_enabled == true and lightdm_conf.changed

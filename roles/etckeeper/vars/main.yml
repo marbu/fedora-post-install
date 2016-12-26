@@ -1,5 +1,4 @@
 ---
-etckeeper_enabled: true
 etckeeper_ignored:
  - 'resolv.conf'
  - 'cups/printers.conf'

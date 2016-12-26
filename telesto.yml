@@ -3,8 +3,6 @@
 - name: Custom xmonad desktop for machine with etckeeper
   hosts: localhost
   connection: local
-  vars:
-    etckeeper_enabled: true
 
   roles:
 

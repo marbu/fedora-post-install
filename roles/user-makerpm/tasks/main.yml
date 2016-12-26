@@ -30,11 +30,6 @@
     createhome={{ do_not_access_home_dir == false }}
     shell=/bin/bash
     state=present
-  register: user_created
-
-- name: Etckeeper commit
-  command: etckeeper commit "create makerpm user account"
-  when: etckeeper_enabled == true and user_created.changed
 
 - name: Create initial rpmbuild tree
   command: runuser -u makerpm rpmdev-setuptree
