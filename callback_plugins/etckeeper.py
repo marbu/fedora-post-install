@@ -40,7 +40,8 @@ class CallbackModule(CallbackBase):
     Initial version (see limitations below) of ansible etckeeper integration
     plugin.
 
-    The idea is to have nice etckeeper commit for every ansible task.
+    The idea is to have nice etckeeper commit for every ansible task (when
+    a task uses with_items, only single commit is created).
 
     Current limitations:
 
