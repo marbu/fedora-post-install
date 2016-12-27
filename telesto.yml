@@ -1,11 +1,9 @@
 ---
-
 - name: Custom xmonad desktop for machine with etckeeper
   hosts: localhost
   connection: local
 
   roles:
-
    - lightdm
    - role: custom-xmonad-desktop
      xscreensaver_lock_username: martin

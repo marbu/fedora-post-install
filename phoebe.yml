@@ -1,14 +1,13 @@
 ---
-
 - name: Fedora workstation post-installation system setup
   hosts: localhost
   connection: local
+
   vars:
     do_not_access_home_dir: true
     firewall_type: iptables
 
   roles:
-
    - fedora-ansible-dependencies
    - role: fedora-common
      update_forced: false
