@@ -9,3 +9,12 @@
 
   roles:
    - TODO
+
+  # tasks:
+  #  - name: Reconfigure something
+  #    ini_file:
+  #      dest=/etc/yum.conf
+  #      section=main
+  #      option=installonly_limit
+  #      value=2
+  #      state=present
