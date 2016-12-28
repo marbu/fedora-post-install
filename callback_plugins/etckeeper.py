@@ -22,6 +22,12 @@ __metaclass__ = type
 import os
 import subprocess
 
+# another python3-ish hack
+try:
+    from subprocess import DEVNULL
+except ImportError:
+    DEVNULL = open(os.devnull, 'w')
+
 from ansible.plugins.callback import CallbackBase
 from ansible import constants as C
 
@@ -48,7 +54,7 @@ class CallbackModule(CallbackBase):
     * ``connection: local`` only (the plugin doesn't handle remore hosts)
     * ansible-playbook process is expected to run under root account (so that
       this plugin can run etckeeper to create new commits)
-    * fedora only
+    * git only
     """
     CALLBACK_VERSION = 2.0
     CALLBACK_TYPE = None # TODO: specify the type properly
@@ -57,20 +63,32 @@ class CallbackModule(CallbackBase):
 
     def __init__(self):
         super(CallbackModule, self).__init__()
-        self._etckeeper_installed = \
-            subprocess.call(['rpm', '-q', 'etckeeper']) == 0
-        self._etckeeper_initialized = os.path.exists('/etc/.etckeeper')
         # make ansible immeditally fail when uncommited changes are detected
         self._on_start()
 
     def _do_nothing(self):
         """
-        Return True when the plugin is expected to do nothing.
+        Check if etckeeper is installed and initialized to return True when the
+        plugin is expected to do nothing.
 
         Reasoning: loading this plugin should not break ansible functionality
-        when etckeeper is either not installed or not configured.
+        when etckeeper is either not installed or not configured. Moreover we
+        need to check etckeeper installation and configuration status every
+        time again to make it possible to setup etckeeper with this plugin
+        enabled, expecting it to work immediately after eckeeper setup.
         """
-        return not self._etckeeper_installed or not self._etckeeper_initialized
+        # TODO: cache status to not check this every time over and over again
+        retcode = subprocess.call(
+            ['which', 'etckeeper'], stdout=DEVNULL, stderr=DEVNULL)
+        etckeeper_installed = retcode == 0
+        if not etckeeper_installed:
+            return True
+        # HACK: this is git only
+        retcode = subprocess.call(
+            ['etckeeper', 'vcs', 'rev-parse', 'HEAD'],
+            stdout=DEVNULL, stderr=DEVNULL)
+        etckeeper_initialized = retcode == 0
+        return not etckeeper_initialized
 
     #
     # start callbacks
