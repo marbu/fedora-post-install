@@ -11,7 +11,7 @@
    - fedora-ansible-dependencies
    - etckeeper
    - role: fedora-common
-     update_forced: true
+     update_forced: false
    - firewall
    - sshd
    - user-root
