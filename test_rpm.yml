@@ -1,0 +1,42 @@
+---
+- name: Example of rpm lookup module usage
+  hosts: localhost
+  connection: local
+
+  vars:
+    package_versions:
+      dnf: 'dnf-1.1.10-2.fc24.noarch'
+      rpm: 'rpm-4.13.0-1.fc24.i686'
+
+  tasks:
+
+     - name: Check version of a given package
+       debug: msg="{{ lookup('rpm', 'ansible') }}"
+
+     - name: Check version of a given package (negative)
+       debug: msg="{{ lookup('rpm', 'foobar') }}"
+
+     - name: Looping over package names and checking it's version
+       debug: msg="{{ item }}"
+       with_rpm:
+         - rpm
+         - dnf
+
+     - name: Use rpm lookup in when (positive)
+       debug: msg="ansible is installed"
+       when: not "{{ lookup('rpm', 'ansible') }}" == ""
+
+     - name: Use rpm lookup in when (negative)
+       debug: msg="foobar is installed"
+       when: not "{{ lookup('rpm', 'foobar') }}" == ""
+
+     - name: Assert that package is available in given version
+       assert:
+         that:
+           - "'{{ lookup('rpm', 'dnf') }}' == 'dnf-1.1.10-2.fc24.noarch'"
+
+     - name: Assert given packages are available in given versions
+       assert:
+         that:
+           - "'{{ lookup('rpm', '{{ item.key }}') }}' == '{{ item.value }}'"
+       with_dict: "{{ package_versions }}"
