@@ -4,8 +4,11 @@
 # but for local usage only
 
 # TODO: run only when the package is not installed (to avoid changed state)
-- name: Install python2-dnf
+- name: Install python2-dnf for dnf module
   command: dnf install -y python2-dnf
+
+- name: Install python-firewall for firewalld module
+  dnf: name=python-firewall state=present
 
 - name: Install libselinux-python
   dnf: name=libselinux-python state=present
