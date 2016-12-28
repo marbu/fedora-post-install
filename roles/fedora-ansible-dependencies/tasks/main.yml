@@ -3,9 +3,9 @@
 # based on https://fedoramagazine.org/getting-ansible-working-fedora-23/
 # but for local usage only
 
-# TODO: run only when the package is not installed (to avoid changed state)
 - name: Install python2-dnf for dnf module
   command: dnf install -y python2-dnf
+  when: "'{{ lookup('rpm', 'python2-dnf') }}' == ''"
 
 - name: Install python-firewall for firewalld module
   dnf: name=python-firewall state=present
