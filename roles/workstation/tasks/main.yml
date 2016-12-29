@@ -17,6 +17,7 @@
 # Additional packages
 #
 
+# TODO: this is super slow on just installed machine
 - name: Install additional packages
   dnf: name={{ item }} state=present
   with_items:
