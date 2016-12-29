@@ -4,6 +4,7 @@
 - name: Initial setup of martin user account
   hosts: localhost
   connection: local
+
   vars:
     default_dirs:
       - Downloads
