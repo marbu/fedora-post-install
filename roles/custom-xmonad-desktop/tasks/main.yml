@@ -13,6 +13,7 @@
     - pmount
     - pavucontrol
     - alsa-utils
+    - redshift
 
 - name: Make sure patch is installed
   dnf: name=patch state=present
