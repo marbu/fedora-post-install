@@ -14,6 +14,7 @@
     - pavucontrol
     - alsa-utils
     - redshift
+    - NetworkManager-tui
 
 - name: Make sure patch is installed
   dnf: name=patch state=present
