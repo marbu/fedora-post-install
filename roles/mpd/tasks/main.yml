@@ -1,0 +1,69 @@
+---
+# Setup of mpd for particular user, using systemd user session.
+# See also: https://wiki.archlinux.org/index.php/Music_Player_Daemon
+
+- name: Install packages
+  dnf: name={{ item }} state=present
+  with_items:
+    - mpd
+    - mpc
+    - ncmpc
+
+- assert:
+    that:
+      - mpd_username is defined
+
+- debug:
+    msg: "Setting up mpd for {{ mpd_username }} user account."
+
+- name: User setup of mpd
+  block:
+
+    - name: Create user mpd directory
+      file:
+        path: "/home/{{ mpd_username}}/.config/mpd/"
+        state: directory
+
+    - name: Create user mpd playlists directory
+      file:
+        path: "/home/{{ mpd_username}}/.config/mpd/playlists"
+        state: directory
+
+    - name: Copy default config file into ~/.config/mpd/ if needed
+      copy:
+        src: /etc/mpd.conf
+        dest: "/home/{{ mpd_username}}/.config/mpd/mpd.conf"
+        force: no
+
+    - name: Local configuration in mpd.conf
+      lineinfile:
+        path: "/home/{{ mpd_username}}/.config/mpd/mpd.conf"
+        regexp: "{{ item.regexp }}"
+        line: "{{ item.line }}"
+        state: present
+      with_items:
+        - regexp: '^#?db_file'
+          line: 'db_file "/home/{{ mpd_username}}/.config/mpd/mpd.db"'
+        - regexp: '^#?log_file'
+          line: 'log_file "/home/{{ mpd_username}}/.config/mpd/mpd.log"'
+        - regexp: '^#?music_directory'
+          line: 'music_directory "/home/{{ mpd_username}}/shared/music"'
+        - regexp: '^#?playlist_directory'
+          line: 'playlist_directory "/home/{{ mpd_username}}/.config/mpd/playlists"'
+        - regexp: '^#?state_file'
+          line: 'state_file "/home/{{ mpd_username}}/.config/mpd/mpdstate"'
+        - regexp: '^#?sticker_file'
+          line: 'sticker_file "/home/{{ mpd_username}}/.config/mpd/sticker.sql"'
+        - regexp: '^#?user'
+          line: '#user "mpd"'
+      notify:
+        - restart mpd
+
+    - name: Enable mpd service
+      service:
+        name: mpd
+        enabled: yes
+        user: yes
+
+  become: True
+  become_user: "{{ mpd_username}}"
