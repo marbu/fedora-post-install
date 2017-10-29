@@ -16,7 +16,7 @@
       - Templates
       - Videos
 
-  tasks:
+  pre_tasks:
 
    - name: Check content of default directories
      command: ls -A ~/{{ item }}
@@ -93,3 +93,7 @@
         val: 'XDG_PICTURES_DIR="$HOME/tvorba/documents"'
       - exp: '^XDG_TEMPLATES_DIR='
         val: 'XDG_TEMPLATES_DIR="$HOME/tvorba/documents"'
+
+  roles:
+   - role: mpd
+     mpd_username: martin
