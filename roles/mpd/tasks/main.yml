@@ -8,6 +8,7 @@
     - mpd
     - mpc
     - ncmpc
+  when: ansible_user == "root"
 
 - assert:
     that:
