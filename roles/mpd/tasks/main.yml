@@ -64,6 +64,7 @@
         name: mpd
         enabled: yes
         user: yes
+      when: ansible_user != "root"
 
   become: True
   become_user: "{{ mpd_username}}"
