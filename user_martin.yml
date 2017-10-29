@@ -97,3 +97,10 @@
   roles:
    - role: mpd
      mpd_username: martin
+
+  tasks:
+    - name: Enable redshift user service
+      service:
+        name: redshift
+        enabled: yes
+        user: yes
