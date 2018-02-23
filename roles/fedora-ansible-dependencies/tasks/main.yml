@@ -3,9 +3,15 @@
 # based on https://fedoramagazine.org/getting-ansible-working-fedora-23/
 # but for local usage only
 
+- name: Check if python2-dnf is installed
+  command: rpm -q python2-dnf
+  register: rpm_q_python2_dnf
+  changed_when: False
+  failed_when: rpm_q_python2_dnf.rc > 1
+
 - name: Install python2-dnf for dnf module
   command: dnf install -y python2-dnf
-  when: "'{{ lookup('rpm', 'python2-dnf') }}' == ''"
+  when: rpm_q_python2_dnf.rc == 1
 
 - name: Install python-firewall for firewalld module
   dnf: name=python-firewall state=present
