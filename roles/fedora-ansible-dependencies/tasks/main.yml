@@ -1,20 +1,14 @@
 ---
 
-# based on https://fedoramagazine.org/getting-ansible-working-fedora-23/
-# but for local usage only
+# Originally based on
+# https://fedoramagazine.org/getting-ansible-working-fedora-23/, but for local
+# usage only. Since Fedora 28, it just installs python3 subpackages instead of
+# python2 ones as ansible version packaged in Fedora 28 already allows one to
+# switch to python 3 for ansible managed node processess (this fixes problem
+# with missing python2-firewall package).
 
-- name: Check if python2-dnf is installed
-  command: rpm -q python2-dnf
-  register: rpm_q_python2_dnf
-  changed_when: False
-  failed_when: rpm_q_python2_dnf.rc > 1
+- name: Install python3-firewall for firewalld module
+  dnf: name=python3-firewall state=present
 
-- name: Install python2-dnf for dnf module
-  command: dnf install -y python2-dnf
-  when: rpm_q_python2_dnf.rc == 1
-
-- name: Install python2-firewall for firewalld module
-  dnf: name=python2-firewall state=present
-
-- name: Install python2-libselinux
-  dnf: name=python2-libselinux state=present
+- name: Install python3-libselinux
+  dnf: name=python3-libselinux state=present

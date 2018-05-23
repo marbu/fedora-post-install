@@ -1,0 +1,5 @@
+---
+# fix for missing python2-firewalld package in Fedora 28
+# https://bugzilla.redhat.com/show_bug.cgi?id=1575428
+# http://docs.ansible.com/ansible/latest/reference_appendices/python_3_support.html#using-python-3-on-the-managed-machines-with-commands-and-playbooks
+ansible_python_interpreter: /usr/bin/python3
