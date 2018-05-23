@@ -13,8 +13,8 @@
   command: dnf install -y python2-dnf
   when: rpm_q_python2_dnf.rc == 1
 
-- name: Install python-firewall for firewalld module
-  dnf: name=python-firewall state=present
+- name: Install python2-firewall for firewalld module
+  dnf: name=python2-firewall state=present
 
-- name: Install libselinux-python
-  dnf: name=libselinux-python state=present
+- name: Install python2-libselinux
+  dnf: name=python2-libselinux state=present
