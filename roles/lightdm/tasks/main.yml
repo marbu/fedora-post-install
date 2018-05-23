@@ -1,24 +1,14 @@
 ---
 
+- name: Make sure lightdm-kde is not installed
+  dnf: name=lightdm-kde state=absent
+
 - name: Install lightdm packages
   dnf: name={{ item }} state=installed
   with_items:
    - lightdm
-   - lightdm-kde
+   - lightdm-gtk
    - light-locker
-
-- name: Disable sddm (fedora 22 default)
-  service: name=sddm enabled=no
-
-- name: Enable lightdm
-  service: name=lightdm enabled=yes
-
-- name: Stop sddm
-  service: name=sddm state=stopped
-
-# may fail, so commenting this out
-#- name: Start lightdm
-#  service: name=lightdm state=started
 
 - name: Disable guest login
   lineinfile: dest=/etc/lightdm/lightdm.conf
@@ -36,3 +26,24 @@
      val: 'greeter-hide-users = true'
    - exp: '^#? ?greeter-show-manual-login ?='
      val: 'greeter-show-manual-login = true'
+
+- name: Check if sddm is installed
+  command: rpm -q sddm
+  register: rpm_q_sddm
+  changed_when: False
+  failed_when: rpm_q_sddm.rc > 1
+
+- name: Disable sddm (Fedora 22 default for KDE/Plasma)
+  service: name=sddm enabled=no
+  when: rpm_q_sddm.rc == 0
+
+- name: Stop sddm
+  service: name=sddm state=stopped
+  when: rpm_q_sddm.rc == 0
+
+- name: Enable lightdm
+  service: name=lightdm enabled=yes
+
+# may fail, TODO: commenting this out if it actually still fails
+- name: Start lightdm
+  service: name=lightdm state=started
