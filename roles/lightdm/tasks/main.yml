@@ -27,6 +27,12 @@
    - exp: '^#? ?greeter-show-manual-login ?='
      val: 'greeter-show-manual-login = true'
 
+- name: BZ 1581495 workaround (drop kwallet pam module from lightdm)
+  lineinfile:
+    dest=/etc/pam.d/lightdm
+    regexp='pam_kwallet.?.so'
+    state=absent
+
 - name: Check if sddm is installed
   command: rpm -q sddm
   register: rpm_q_sddm
