@@ -1,9 +1,22 @@
 ---
-- name: Custom xmonad desktop for machine with etckeeper
+- name: Fedora post upgrade setup for telesto
   hosts: localhost
   connection: local
 
+  vars:
+    do_not_access_home_dir: false
+    firewall_type: firewalld
+
   roles:
+   - fedora-ansible-dependencies
+   - etckeeper
+   - firewall
+   - sshd
+   - user-root
    - lightdm
    - role: custom-xmonad-desktop
      xscreensaver_lock_username: martin
+   - user-makerpm
+   - role: mpd
+     mpd_username: martin
+   - workstation
