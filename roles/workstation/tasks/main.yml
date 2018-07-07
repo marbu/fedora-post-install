@@ -36,6 +36,7 @@
    - python3-ipython
    - pylint
    - python3-pylint
+   - python3-q
    - python-ctags
    - xmlstarlet
    - jq
