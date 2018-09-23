@@ -1,0 +1,50 @@
+---
+- name: Fedora workstation post-installation system setup
+  hosts: localhost
+  connection: local
+
+  vars:
+    do_not_access_home_dir: false
+    firewall_type: firewalld
+
+  roles:
+   - fedora-ansible-dependencies
+   - role: fedora-common
+     update_forced: false
+   - firewall
+   - sshd
+   - user-root
+   - role: users
+     additional_users:
+      - jarek
+      - tomas
+      - hana
+      - honzik
+      - filip
+      - host
+      - backup
+
+  tasks:
+   - name: Install additional packages
+     dnf: name={{ item }} state=present
+     tags: install-packages
+     with_items:
+      - vim
+      - mc
+      - vifm
+      - tmux
+      - htop
+      - vlc
+      - mplayer
+      - pandoc
+      - pmount
+      - firefox
+      - thunderbird
+      - thunderbird-enigmail
+      - keepassx
+      - audacity
+      - gimp
+      - geeqie
+      - nmap
+      - ddrescue
+      - fbreader
