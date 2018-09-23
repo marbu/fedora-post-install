@@ -23,6 +23,8 @@
       - filip
       - host
       - backup
+   - role: custom-xmonad-desktop
+     xscreensaver_lock_username: martin
 
   tasks:
    - name: Install additional packages
