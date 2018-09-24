@@ -1,0 +1,50 @@
+---
+
+- name: Check if CPU virtualization extensions are available
+  command: egrep '^flags.*(vmx|svm)' /proc/cpuinfo
+  register: egrep_cpuinfo
+  changed_when: False
+  failed_when: egrep_cpuinfo.rc > 1
+
+- assert:
+    that:
+      - egrep_cpuinfo.rc == 0
+    msg:
+      - "CPU virtualization extensions (Intel VT or AMD-V) not present"
+
+- name: Install virtualization packages
+  dnf:
+    name: "@virtualization"
+    state: present
+
+- name: Install libguestfs tools
+  dnf:
+    name: "{{ item }}"
+    state: present
+  with_items:
+    - libguestfs-tools
+    - libguestfs-rsync
+    - libguestfs-xfs
+    - python3-libguestfs
+    - libguestfs-bash-completion
+
+- name: Enable libvirtd
+  service:
+    name: libvirtd
+    enabled: yes
+
+- name: Start libvirtd
+  service:
+    name: libvirtd
+    state: started
+
+#
+# libvirt polkit based auth, see BZ 957300
+#
+
+- name: Add users into libvirt group (for passwordless access)
+  user:
+    name: "{{ item }}"
+    groups: libvirt
+    append: yes
+  with_items: "{{ libvirt_users }}"
