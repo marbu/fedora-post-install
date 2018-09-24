@@ -1,0 +1,37 @@
+---
+
+- name: Make sure lightdm-kde is not installed
+  dnf: name=lightdm-kde state=absent
+
+- name: Check if lightdm is installed
+  command: rpm -q lightdm
+  register: rpm_q_lightdm
+  changed_when: False
+  failed_when: rpm_q_lightdm.rc > 1
+
+- name: Disable lightdm if needed
+  service: name=lightdm enabled=no
+  when: rpm_q_lightdm.rc == 0
+
+- name: Stop lightdm if needed
+  service: name=lightdm state=stopped
+  when: rpm_q_lightdm.rc == 0
+
+#
+# SDDM Setup
+#
+
+- name: Install SDDM packages
+  dnf: name={{ item }} state=installed
+  with_items:
+   - sddm
+   - sddm-themes
+   - sddm-breeze
+
+# TODO: configuration of shown users, tweaking of homedirs ...
+
+- name: Enable SDDM service
+  service: name=sddm enabled=yes
+
+- name: Start SDDM service
+  service: name=sddm state=started

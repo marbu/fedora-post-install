@@ -23,6 +23,7 @@
       - filip
       - host
       - backup
+   - sddm
    - role: custom-xmonad-desktop
      xscreensaver_lock_username: martin
 
