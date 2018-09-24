@@ -14,8 +14,8 @@
    - firewall
    - sshd
    - user-root
+   - users
    - lightdm
    - role: custom-xmonad-desktop
      xscreensaver_lock_username: martin
-   - users
    - workstation

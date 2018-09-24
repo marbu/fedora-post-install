@@ -15,11 +15,11 @@
    - firewall
    - sshd
    - user-root
+   - users
+   - user-makerpm
    - lightdm
    - role: custom-xmonad-desktop
      xscreensaver_lock_username: martin
-   - users
-   - user-makerpm
    - role: mpd
      mpd_username: martin
    - workstation

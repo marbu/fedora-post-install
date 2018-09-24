@@ -1,5 +1,5 @@
 ---
-- name: Fedora post upgrade setup for telesto
+- name: Fedora post-installation setup for telesto
   hosts: localhost
   connection: local
 
@@ -10,13 +10,17 @@
   roles:
    - fedora-ansible-dependencies
    - etckeeper
+   - role: fedora-common
+     update_forced: false
    - firewall
    - sshd
    - user-root
+   - role: users
+     additional_users: []
+   - user-makerpm
    - lightdm
    - role: custom-xmonad-desktop
      xscreensaver_lock_username: martin
-   - user-makerpm
    - role: mpd
      mpd_username: martin
    - workstation
