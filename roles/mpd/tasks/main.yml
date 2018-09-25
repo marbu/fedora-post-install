@@ -1,6 +1,4 @@
 ---
-# Setup of mpd for particular user, using systemd user session.
-# See also: https://wiki.archlinux.org/index.php/Music_Player_Daemon
 
 - name: Install packages
   dnf: name={{ item }} state=present
