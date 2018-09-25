@@ -23,4 +23,7 @@
      xscreensaver_lock_username: martin
    - role: mpd
      mpd_username: martin
+   - role: virtualization
+     libvirt_users:
+      - martin
    - workstation
