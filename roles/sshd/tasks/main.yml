@@ -1,5 +1,12 @@
 ---
 
+- assert:
+    that:
+      - ssh_allow_users is defined
+      - "{{ ssh_allow_users | length }} > 0"
+    msg:
+      - "list ssh_allow_users should contain at least one username"
+
 #
 # sshd setup
 #
@@ -24,8 +31,15 @@
      val: 'IgnoreRhosts yes'
    - exp: '^#?Protocol'
      val: 'Protocol 2'
-   - exp: '^AllowUsers'
-     val: 'AllowUsers root martin'
+  notify:
+    - restart sshd
+
+- name: Set AllowUsers
+  lineinfile:
+    dest: /etc/ssh/sshd_config
+    regexp: '^AllowUsers'
+    line: "AllowUsers {{ ssh_allow_users | join(' ') }}"
+    state: present
   notify:
     - restart sshd
 

@@ -13,7 +13,9 @@
    - role: fedora-common
      update_forced: false
    - firewall
-   - sshd
+   - role: sshd
+     ssh_allow_users:
+      - martin
    - user-root
    - role: users
      additional_users: []
