@@ -61,8 +61,6 @@
       - logs
       # temporary files (aka the mess)
       - tmp
-      # locally installed stuff (pip/virtualenvs, all-in-one jars)
-      - local
 
    - name: Create some symlinks (for convenience)
      file: src=~/{{ item.path }} dest={{ item.dest }} state=link
