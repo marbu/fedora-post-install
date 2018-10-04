@@ -12,7 +12,6 @@
    - rpmdevtools
    - rpm-sign
    - fedpkg
-   - python-copr
    - python3-copr
    - python-copr-doc
    - copr-cli
