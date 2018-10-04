@@ -5,3 +5,4 @@
     name: mpd
     state: restarted
     user: yes
+  when: ansible_user != "root"
