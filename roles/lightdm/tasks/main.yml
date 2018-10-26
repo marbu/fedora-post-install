@@ -38,7 +38,8 @@
   register: rpm_q_sddm
   changed_when: False
   failed_when: rpm_q_sddm.rc > 1
-  warn: False
+  args:
+    warn: False
 
 - name: Disable sddm (Fedora 22 default for KDE/Plasma)
   service: name=sddm enabled=no
