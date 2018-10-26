@@ -5,3 +5,4 @@ etckeeper_ignored:
  - 'cups/printers.conf.O'
  - 'printcap'
  - 'ntp.conf'
+ - 'cups/ppd'
