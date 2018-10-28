@@ -25,7 +25,9 @@
       - filip
       - host
       - backup
-   - sddm
+   - role: sddm
+     sddm_hide_users:
+      - backup
    - role: cups-printer-xerox
      cups_printer_xerox_ppd_file: /root/data/xerox/cd/Linux/xerox.ppd/ph3250.ppd
    - role: custom-xmonad-desktop

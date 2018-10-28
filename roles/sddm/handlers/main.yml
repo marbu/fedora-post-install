@@ -1,0 +1,4 @@
+---
+
+- name: restart sddm
+  service: name=sddm state=restarted

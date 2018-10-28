@@ -30,7 +30,29 @@
    - sddm-themes
    - sddm-breeze
 
-# TODO: configuration of shown users, tweaking of homedirs ...
+- name: Configure SDDM
+  lineinfile:
+    dest: /etc/sddm.conf
+    regexp: "{{ item.exp }}"
+    line: "{{ item.val }}"
+    state: present
+  with_items:
+   - exp: '^#?RememberLastSession'
+     val: 'RememberLastSession=true'
+   - exp: '^#?RememberLastUser'
+     val: 'RememberLastUser=true'
+  notify:
+    - restart sddm
+
+- name: Configure hide users for SDDM
+  lineinfile:
+    dest: /etc/sddm.conf
+    regexp: "^#?HideUsers"
+    line: "HideUsers={{ sddm_hide_users | join(',') }}"
+    state: present
+  when: sddm_hide_users is defined
+  notify:
+    - restart sddm
 
 - name: Enable SDDM service
   service: name=sddm enabled=yes
