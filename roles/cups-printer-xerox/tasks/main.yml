@@ -1,0 +1,76 @@
+---
+
+- assert:
+    that:
+      - cups_printer_xerox_ppd_file is defined
+    msg: >
+      You need to specify file path of xerox ppd file in
+      cups_printer_xerox_ppd_file variable!
+
+- name: Install CUPS packages
+  dnf:
+    name:
+      - cups
+      - cups-client
+    state: present
+
+- name: Copy PPD file for the xerox printer
+  copy:
+    src: "{{ cups_printer_xerox_ppd_file }}"
+    dest: /etc/cups/ppd/xerox.ppd
+    owner: root
+    group: lp
+    mode: 640
+  notify:
+    - restart cups
+
+- name: Check if the xerox printer is already defined in printers.conf
+  command: grep 6cfde3ff-b629-3042-7933-72d4c9f0cbe3 /etc/cups/printers.conf
+  register: grep_xerox_printer
+  failed_when: grep_xerox_printer.rc > 1
+  changed_when: false
+
+- name: Stop CUPS daemon if needed
+  service:
+    name: cups
+    state: stopped
+  when: grep_xerox_printer.rc == 1
+
+- name: Add the xerox printer into CUPS printers.conf file
+  blockinfile:
+    path: /etc/cups/printers.conf
+    block: |
+      # Written by cupsd on 2016-10-09 15:07
+      <DefaultPrinter xerox>
+      UUID urn:uuid:6cfde3ff-b629-3042-7933-72d4c9f0cbe3
+      AuthInfoRequired none
+      Info Xerox Phaser 3250
+      Location living room
+      MakeModel Xerox Phaser 3250DN PS
+      DeviceURI http://xerox:631
+      State Idle
+      StateTime 1476018446
+      ConfigTime 1447719279
+      Type 8392788
+      Accepting Yes
+      Shared No
+      JobSheets none none
+      QuotaPeriod 0
+      PageLimit 0
+      KLimit 0
+      OpPolicy default
+      ErrorPolicy stop-printer
+      Attribute marker-colors \#000000
+      Attribute marker-levels 34
+      Attribute marker-names Toner S/N:CRUM-11013130145
+      Attribute marker-types toner
+      Attribute marker-change-time 1476018442
+      </DefaultPrinter>
+    backup: yes
+  when: grep_xerox_printer.rc == 1
+
+- name: Start and enable CUPS daemon
+  service:
+    name: cups
+    state: started
+    enabled: yes
