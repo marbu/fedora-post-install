@@ -9,8 +9,7 @@
 - assert:
     that:
       - egrep_cpuinfo.rc == 0
-    msg:
-      - "CPU virtualization extensions (Intel VT or AMD-V) not present"
+    msg: "CPU virtualization extensions (Intel VT or AMD-V) not present"
 
 - name: Install virtualization packages
   dnf:

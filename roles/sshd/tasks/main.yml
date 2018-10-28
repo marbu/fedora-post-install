@@ -4,8 +4,7 @@
     that:
       - ssh_allow_users is defined
       - "{{ ssh_allow_users | length }} > 0"
-    msg:
-      - "list ssh_allow_users should contain at least one username"
+    msg: "list ssh_allow_users should contain at least one username"
 
 #
 # sshd setup
