@@ -15,7 +15,6 @@
    - python3-copr
    - python-copr-doc
    - copr-cli
-   - copr-cli-doc
    - wget
 
 - name: Create makerpm group
