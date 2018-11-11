@@ -57,3 +57,7 @@
       - nmap
       - ddrescue
       - fbreader
+      - libreoffice
+      - libreoffice-help-cs
+      - libreoffice-langpack-cs
+      - unoconv
