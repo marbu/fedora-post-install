@@ -25,5 +25,5 @@
      xscreensaver_lock_username: martin
    - role: mpd
      mpd_username: martin
-   - workstation
+   - local-dns
    - packages-martin

@@ -28,5 +28,5 @@
    - role: virtualization
      libvirt_users:
       - martin
-   - workstation
+   - local-dns
    - packages-martin

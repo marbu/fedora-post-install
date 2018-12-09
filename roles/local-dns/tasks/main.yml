@@ -1,9 +1,5 @@
 ---
 
-#
-# Local DNS server
-#
-
 - name: Enable local DNS server (networkmanager dnsmasq)
   ini_file: dest=/etc/NetworkManager/NetworkManager.conf
             section=main
