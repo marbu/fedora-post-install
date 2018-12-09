@@ -11,25 +11,17 @@
    - fedora-ansible-dependencies
    - fedora-common
    - firewall
-   - role: sshd
-     ssh_allow_users:
-      - root
    - user-root
    - role: users
-     main_user_name: martin
+     main_user_name: jarek
      additional_users:
-      - jarek
+      - martin
       - tomas
       - hana
-      - honzik
-      - filip
-      - host
       - backup
    - role: sddm
      sddm_hide_users:
       - backup
    - role: cups-printer-xerox
      cups_printer_xerox_ppd_file: /root/data/xerox/cd/Linux/xerox.ppd/ph3250.ppd
-   - role: custom-xmonad-desktop
-     xscreensaver_lock_username: martin
    - packages-bk
