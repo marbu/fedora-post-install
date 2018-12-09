@@ -4,19 +4,30 @@
 # Create user accounts
 #
 
-- name: Create martin group
-  group: name=martin gid=1000 state=present
+- assert:
+    that:
+      - main_user_name is defined
+    msg: >
+      You need to specify unix username of main user account in
+      main_user_name variable!
 
-- name: Create martin account
-  user: name=martin
-        group=martin
+- name: Create main user group
+  group: name={{ main_user_name }} gid=1000 state=present
+
+- name: Create main user account
+  user: name={{ main_user_name }}
+        group={{ main_user_name }}
         groups=users
         uid=1000
-        home=/home/martin
+        home=/home/{{ main_user_name }}
         createhome={{ do_not_access_home_dir == false }}
         shell=/bin/bash
-        comment='Martin B.'
         state=present
+
+- name: Set comment for main user account
+  user: name={{ main_user_name }}
+        comment={{ main_user_comment }}
+  when: main_user_comment is defined
 
 - name: Groups for additional user accounts
   group: name={{ item }} state=present

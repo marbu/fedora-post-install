@@ -18,7 +18,9 @@
       - root
       - martin
    - user-root
-   - users
+   - role: users
+     main_user_name: martin
+     main_user_comment: 'Martin B.'
    - user-makerpm
    - lightdm
    - role: custom-xmonad-desktop
