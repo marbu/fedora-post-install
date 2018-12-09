@@ -1,0 +1,53 @@
+---
+
+- name: Install additional packages
+  dnf: name={{ item }} state=present
+  tags: install-packages
+  with_items:
+   - vim
+   - gvim
+   - tmux
+   - vifm
+   - mc
+   - htop
+   - lshw
+   - acpi
+   - wget
+   - curl
+   - wipe
+   - ipython
+   - python3-ipython
+   - pylint
+   - python3-pylint
+   - python3-q
+   - python-ctags
+   - xmlstarlet
+   - jq
+   - git
+   - git-annex
+   - tig
+   - gitk
+   - meld
+   - terminator
+   - pandoc
+   - pmount
+   - firefox
+   - thunderbird
+   - thunderbird-enigmail
+   - keepassx
+   - ruby
+   - ruby-irb
+   - mutt
+   - notmuch-mutt
+   - abook
+   - goobook
+   - msmtp
+   - offlineimap
+   - graphviz
+   - epydoc
+   - mercurial
+   - darcs
+   - fedpkg
+   - audacity
+   - unoconv
+   - qstardict

@@ -22,3 +22,4 @@
    - role: custom-xmonad-desktop
      xscreensaver_lock_username: martin
    - workstation
+   - packages-martin

@@ -26,3 +26,4 @@
    - role: mpd
      mpd_username: martin
    - workstation
+   - packages-martin
