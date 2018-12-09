@@ -9,8 +9,7 @@
 
   roles:
    - fedora-ansible-dependencies
-   - role: fedora-common
-     update_forced: false
+   - fedora-common
    - firewall
    - role: sshd
      ssh_allow_users:

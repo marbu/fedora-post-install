@@ -10,8 +10,7 @@
   roles:
    - fedora-ansible-dependencies
    - etckeeper
-   - role: fedora-common
-     update_forced: false
+   - fedora-common
    - firewall
    - role: sshd
      ssh_allow_users:
