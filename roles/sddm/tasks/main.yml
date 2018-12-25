@@ -24,11 +24,12 @@
 #
 
 - name: Install SDDM packages
-  dnf: name={{ item }} state=installed
-  with_items:
-   - sddm
-   - sddm-themes
-   - sddm-breeze
+  dnf:
+    name:
+     - sddm
+     - sddm-themes
+     - sddm-breeze
+    state: installed
 
 - name: Configure SDDM
   lineinfile:

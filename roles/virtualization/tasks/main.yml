@@ -18,14 +18,13 @@
 
 - name: Install libguestfs tools
   dnf:
-    name: "{{ item }}"
+    name:
+      - libguestfs-tools
+      - libguestfs-rsync
+      - libguestfs-xfs
+      - python3-libguestfs
+      - libguestfs-bash-completion
     state: present
-  with_items:
-    - libguestfs-tools
-    - libguestfs-rsync
-    - libguestfs-xfs
-    - python3-libguestfs
-    - libguestfs-bash-completion
 
 - name: Enable libvirtd
   service:

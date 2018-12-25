@@ -1,21 +1,22 @@
 ---
 
 - name: Install packages
-  dnf: name={{ item }} state=present
-  with_items:
-    - xmonad
-    - xmobar
-    - dmenu
-    - rxvt-unicode
-    - rxvt-unicode-256color-ml
-    - xloadimage
-    - xbacklight
-    - xscreensaver
-    - pmount
-    - pavucontrol
-    - alsa-utils
-    - redshift
-    - NetworkManager-tui
+  dnf:
+    name:
+      - xmonad
+      - xmobar
+      - dmenu
+      - rxvt-unicode
+      - rxvt-unicode-256color-ml
+      - xloadimage
+      - xbacklight
+      - xscreensaver
+      - pmount
+      - pavucontrol
+      - alsa-utils
+      - redshift
+      - NetworkManager-tui
+    state: present
 
 - name: Make sure patch is installed
   dnf: name=patch state=present

@@ -5,17 +5,18 @@
 #
 
 - name: Install development tools
-  dnf: name={{ item }} state=present
-  with_items:
-   - "@development-tools"
-   - fedora-packager
-   - rpmdevtools
-   - rpm-sign
-   - fedpkg
-   - python3-copr
-   - python-copr-doc
-   - copr-cli
-   - wget
+  dnf:
+    name:
+     - "@development-tools"
+     - fedora-packager
+     - rpmdevtools
+     - rpm-sign
+     - fedpkg
+     - python3-copr
+     - python-copr-doc
+     - copr-cli
+     - wget
+    state: present
 
 - name: Create makerpm group
   group: name=makerpm state=present
