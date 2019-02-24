@@ -2,7 +2,9 @@
 
 - name: Install gitit packages
   dnf:
-    name: gitit
+    name:
+     - gitit
+     - texlive-ulem
     state: present
   when: ansible_user == "root"
 
