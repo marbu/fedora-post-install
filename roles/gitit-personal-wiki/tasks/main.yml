@@ -1,0 +1,67 @@
+---
+
+- name: Install gitit packages
+  dnf:
+    name: gitit
+    state: present
+  when: ansible_user == "root"
+
+- assert:
+    that:
+      - gitit_username is defined
+
+- debug:
+    msg: "Setting up personal wiki for {{ gitit_username }} user account."
+
+# TODO: firewall
+
+- name: User setup of gitit personal wiki
+  block:
+
+    - name: Create gitit directory
+      file:
+        path: "{{ gitit_work_dir }}"
+        state: directory
+
+    - name: Initialize gitit.conf file
+      shell: gitit --print-default-config > gitit.conf
+      args:
+        chdir:   "{{ gitit_work_dir }}"
+        creates: "{{ gitit_work_dir }}/gitit.conf"
+
+    - name: Configure gitit
+      lineinfile:
+        path: "{{ gitit_work_dir }}/gitit.conf"
+        regexp: "{{ item.regexp }}"
+        line: "{{ item.line }}"
+        state: present
+      with_items:
+        - regexp: '^#?address:'
+          line: 'address: 127.0.0.1'
+        - regexp: '^#?port:'
+          line: 'port: 50505'
+        - regexp: '^#?wiki-title:'
+          line: 'wiki-title: Personal Wiki'
+        - regexp: '^#?repository-path:'
+          line: 'repository-path: {{ gitit_repo_dir }}'
+        - regexp: '^#?math:'
+          line: 'math: MathML'
+        - regexp: '^#?pdf-export:'
+          line: 'pdf-export: yes'
+      notify:
+        - restart gitit
+
+    - name: Create gitit service file
+      template:
+        src: roles/gitit-personal-wiki/files/gitit.service.j2
+        dest: ~/.config/systemd/user/gitit.service
+
+    - name: Enable gitit service
+      service:
+        name: gitit
+        enabled: yes
+        user: yes
+      when: ansible_user != "root"
+
+  become: True
+  become_user: "{{ gitit_username }}"

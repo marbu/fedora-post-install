@@ -1,0 +1,3 @@
+---
+gitit_work_dir: "/home/{{ gitit_username }}/tvorba/gitit.wiki/"
+gitit_repo_dir: "/home/{{ gitit_username }}/tvorba/wiki/"

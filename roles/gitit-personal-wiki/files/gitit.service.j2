@@ -1,0 +1,11 @@
+[Unit]
+Description=gitit based personal wiki
+
+[Service]
+Type=simple
+WorkingDirectory={{ gitit_work_dir }}
+ExecStart=/usr/bin/gitit -f {{ gitit_work_dir }}/gitit.conf
+Restart=no
+
+[Install]
+WantedBy=console.target

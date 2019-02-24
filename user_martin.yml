@@ -95,6 +95,9 @@
   roles:
    - role: mpd
      mpd_username: martin
+   - role: gitit-personal-wiki
+     gitit_username: martin
+     tags: gitit
 
   tasks:
     - name: Enable redshift user service

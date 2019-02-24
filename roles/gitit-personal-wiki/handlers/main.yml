@@ -1,0 +1,8 @@
+---
+
+- name: restart gitit
+  systemd:
+    name: gitit
+    state: restarted
+    user: yes
+  when: ansible_user != "root"
