@@ -13,7 +13,36 @@
 - debug:
     msg: "Setting up personal wiki for {{ gitit_username }} user account."
 
-# TODO: firewall
+# TODO: test and tweak this task
+- name: Restrict local access to gitit port (iptables)
+  lineinfile:
+    dest: '/etc/sysconfig/{{ item }}'
+    line: '-A OUTPUT {{ gitit_iptables_rule }}'
+    insertbefore: '^COMMIT'
+    state: present
+  with_items:
+   - iptables
+  notify:
+   - restart iptables
+  when: firewall_type == "iptables"
+
+- name: Get direct rules (firewalld)
+  command: 'firewall-cmd --direct --get-rules ipv4 filter OUTPUT'
+  changed_when: false
+  register: firewalld_get_rules
+  when: firewall_type == "firewalld"
+
+- name: Get list of direct rules from get-rules output (firewalld)
+  set_fact:
+    firewalld_rules: "{{ firewalld_get_rules.stdout|regex_replace('.!.', '!') }}"
+  when: firewall_type == "firewalld"
+
+- name: Restrict local access to gitit port (firewalld)
+  command: "{{ item }}"
+  with_items:
+   - 'firewall-cmd --direct --add-rule ipv4 filter OUTPUT 0 {{ gitit_iptables_rule }}'
+   - 'firewall-cmd --permanent --direct --add-rule ipv4 filter OUTPUT 0 {{ gitit_iptables_rule }}'
+  when: firewall_type == "firewalld" and not (gitit_iptables_rule in firewalld_rules)
 
 - name: User setup of gitit personal wiki
   block:
@@ -39,7 +68,7 @@
         - regexp: '^#?address:'
           line: 'address: 127.0.0.1'
         - regexp: '^#?port:'
-          line: 'port: 50505'
+          line: 'port: {{ gitit_port }}'
         - regexp: '^#?wiki-title:'
           line: 'wiki-title: Personal Wiki'
         - regexp: '^#?repository-path:'

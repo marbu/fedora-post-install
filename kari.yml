@@ -28,6 +28,7 @@
      mpd_username: martin
    - role: gitit-personal-wiki
      gitit_username: martin
+     tags: gitit
    - local-dns
    - packages-martin
    - role: cups-printer-xerox

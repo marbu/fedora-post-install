@@ -28,6 +28,7 @@
      mpd_username: martin
    - role: gitit-personal-wiki
      gitit_username: martin
+     tags: gitit
    - role: virtualization
      libvirt_users:
       - martin
