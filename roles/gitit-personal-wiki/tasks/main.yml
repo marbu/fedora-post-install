@@ -1,5 +1,20 @@
 ---
 
+#
+# check assumptions
+#
+
+- assert:
+    that:
+      - gitit_username is defined
+
+- debug:
+    msg: "Setting up personal wiki for {{ gitit_username }} user account."
+
+#
+# installation and firewall setup
+#
+
 - name: Install gitit packages
   dnf:
     name:
@@ -8,12 +23,10 @@
     state: present
   when: ansible_user == "root"
 
-- assert:
-    that:
-      - gitit_username is defined
-
-- debug:
-    msg: "Setting up personal wiki for {{ gitit_username }} user account."
+- name: Set firewall_type to unknown if not defined
+  set_fact:
+    firewall_type: 'unknown'
+  when: ansible_user != "root" and firewall_type is undefined
 
 # TODO: test and tweak this task
 - name: Restrict local access to gitit port (iptables)
@@ -26,27 +39,35 @@
    - iptables
   notify:
    - restart iptables
-  when: firewall_type == "iptables"
-
-- name: Get direct rules (firewalld)
-  command: 'firewall-cmd --direct --get-rules ipv4 filter OUTPUT'
-  changed_when: false
-  register: firewalld_get_rules
-  when: firewall_type == "firewalld"
-
-- name: Get list of direct rules from get-rules output (firewalld)
-  set_fact:
-    firewalld_rules: "{{ firewalld_get_rules.stdout|regex_replace('.!.', '!') }}"
-  when: firewall_type == "firewalld"
+  when: firewall_type == "iptables" and ansible_user == "root"
 
 - name: Restrict local access to gitit port (firewalld)
-  command: "{{ item }}"
-  with_items:
-   - 'firewall-cmd --direct --add-rule ipv4 filter OUTPUT 0 {{ gitit_iptables_rule }}'
-   - 'firewall-cmd --permanent --direct --add-rule ipv4 filter OUTPUT 0 {{ gitit_iptables_rule }}'
-  when: firewall_type == "firewalld" and not (gitit_iptables_rule in firewalld_rules)
+  when: firewall_type == "firewalld" and ansible_user == "root"
+  block:
+
+   - name: Get direct rules
+     command: 'firewall-cmd --direct --get-rules ipv4 filter OUTPUT'
+     changed_when: false
+     register: firewalld_get_rules
+
+   - name: Get list of direct rules from get-rules output
+     set_fact:
+       firewalld_rules: "{{ firewalld_get_rules.stdout|regex_replace('.!.', '!') }}"
+
+   - name: Define direct rule to restrict local access to gitit port
+     command: "{{ item }}"
+     with_items:
+      - 'firewall-cmd --direct --add-rule ipv4 filter OUTPUT 0 {{ gitit_iptables_rule }}'
+      - 'firewall-cmd --permanent --direct --add-rule ipv4 filter OUTPUT 0 {{ gitit_iptables_rule }}'
+     when: not (gitit_iptables_rule in firewalld_rules)
+
+#
+# user level setup
+#
 
 - name: User setup of gitit personal wiki
+  become: True
+  become_user: "{{ gitit_username }}"
   block:
 
     - name: Create gitit directory
@@ -93,6 +114,3 @@
         enabled: yes
         user: yes
       when: ansible_user != "root"
-
-  become: True
-  become_user: "{{ gitit_username }}"
