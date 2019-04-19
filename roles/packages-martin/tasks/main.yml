@@ -66,5 +66,6 @@
      - iotop
      - mplayer
      - ffmpeg
+     - gtimelog
     state: present
   tags: install-packages
