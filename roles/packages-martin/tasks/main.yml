@@ -68,5 +68,6 @@
      - ffmpeg
      - sox
      - gtimelog
+     - gpxsee
     state: present
   tags: install-packages
