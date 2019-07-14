@@ -67,5 +67,7 @@
      - sox
      - gtimelog
      - gpxsee
+     - filelight
+     - krusader
     state: present
   tags: install-packages
