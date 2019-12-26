@@ -18,14 +18,6 @@
       - NetworkManager-tui
     state: present
 
-- name: Make sure patch is installed
-  dnf: name=patch state=present
-
-- name: Make Xsession souce ~/.xprofile script (BZ 845339 workaround)
-  patch:
-     src=roles/custom-xmonad-desktop/files/bz845339-hack.patch
-     dest=/etc/X11/xinit/Xsession
-
 # TODO: make it more general, maybe use xuserrun or some systemd hack?
 # https://wiki.archlinux.org/index.php/XScreenSaver
 - name: Service xscreensaver-lock (lock screen before sleep or suspend)
