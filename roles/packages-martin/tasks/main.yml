@@ -6,6 +6,7 @@
      - vim
      - gvim
      - tmux
+     - python3-tmuxp
      - vifm
      - mc
      - htop
