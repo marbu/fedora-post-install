@@ -1,0 +1,41 @@
+---
+
+- assert:
+    that:
+      - minikube_username is defined
+
+- name: Minikube user
+  user:
+    name: "{{ minikube_username }}"
+    createhome: "{{ do_not_access_home_dir == false }}"
+    state: present
+
+- name: Install build dependencies
+  dnf:
+    name:
+      - golang
+      - glibc-static
+      - libvirt-devel
+      - kubernetes-client
+    state: present
+
+- name: Setup of minikube user
+  become: True
+  become_user: "{{ minikube_username }}"
+  when: not do_not_access_home_dir
+  block:
+
+    - name: Create projects directory
+      file:
+        path: ~/projects
+        state: directory
+
+    - name: Create bin directory
+      file:
+        path: ~/bin
+        state: directory
+
+    - name: clone minikube source code
+      git:
+        repo: https://github.com/kubernetes/minikube.git
+        dest: ~/projects/minikube

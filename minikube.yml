@@ -1,0 +1,13 @@
+---
+- name: Minikube setup
+  hosts: localhost
+  connection: local
+  vars:
+    do_not_access_home_dir: false
+    libvirt_users:
+     - martin
+     - kube
+    minikube_username: kube
+  roles:
+   - virtualization
+   - minikube
