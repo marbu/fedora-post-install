@@ -70,5 +70,7 @@
      - gpxsee
      - filelight
      - krusader
+     - podman
+     - toolbox
     state: present
   tags: install-packages
