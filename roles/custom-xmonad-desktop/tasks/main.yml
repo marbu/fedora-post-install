@@ -9,7 +9,7 @@
       - rxvt-unicode
       - rxvt-unicode-256color-ml
       - xloadimage
-      - xbacklight
+      - brightnessctl
       - xscreensaver
       - pmount
       - pavucontrol
