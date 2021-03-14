@@ -32,7 +32,6 @@
    - role: virtualization
      libvirt_users:
       - martin
-   - local-dns
    - packages-martin
    - role: cups-printer-xerox
      when: cups_printer_xerox_ppd_file is defined

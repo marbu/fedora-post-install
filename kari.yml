@@ -29,7 +29,6 @@
    - role: gitit-personal-wiki
      gitit_username: martin
      tags: gitit
-   - local-dns
    - packages-martin
    - role: cups-printer-xerox
      when: cups_printer_xerox_ppd_file is defined
