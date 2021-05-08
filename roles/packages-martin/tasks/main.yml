@@ -79,5 +79,6 @@
      - toolbox
      - quearcode
      - zbar
+     - python3-qrcode
     state: present
   tags: install-packages
