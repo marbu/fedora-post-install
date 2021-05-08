@@ -80,5 +80,6 @@
      - quearcode
      - zbar
      - python3-qrcode
+     - alacritty
     state: present
   tags: install-packages
