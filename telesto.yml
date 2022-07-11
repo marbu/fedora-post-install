@@ -12,9 +12,6 @@
    - etckeeper
    - fedora-common
    - firewall
-   - role: sshd
-     ssh_allow_users:
-      - martin
    - user-root
    - role: users
      main_user_name: martin
@@ -29,4 +26,7 @@
    - role: virtualization
      libvirt_users:
       - martin
+   - role: gitit-personal-wiki
+     gitit_username: martin
+     tags: gitit
    - packages-martin
