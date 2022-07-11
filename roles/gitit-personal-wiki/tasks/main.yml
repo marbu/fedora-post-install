@@ -68,6 +68,7 @@
 - name: User setup of gitit personal wiki
   become: True
   become_user: "{{ gitit_username }}"
+  when: do_not_access_home_dir == false
   block:
 
     - name: Create gitit directory

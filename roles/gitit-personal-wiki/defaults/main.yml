@@ -4,3 +4,4 @@ gitit_work_dir: "/home/{{ gitit_username }}/tvorba/gitit.{{ gitit_wikiname }}/"
 gitit_repo_dir: "/home/{{ gitit_username }}/tvorba/{{ gitit_wikiname }}/"
 gitit_port: 50505
 gitit_iptables_rule: '-p tcp --dport {{ gitit_port }} -d localhost -m owner ! --uid-owner {{ gitit_username }} -j REJECT'
+do_not_access_home_dir: false
