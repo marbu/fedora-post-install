@@ -7,7 +7,6 @@
       - xmobar
       - dmenu
       - rxvt-unicode
-      - rxvt-unicode-256color-ml
       - alacritty
       - xloadimage
       - brightnessctl
