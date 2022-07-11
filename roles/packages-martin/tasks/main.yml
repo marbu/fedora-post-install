@@ -38,7 +38,6 @@
      - pmount
      - firefox
      - thunderbird
-     - thunderbird-enigmail
      - keepassxc
      - ruby
      - ruby-irb
@@ -49,7 +48,6 @@
      - msmtp
      - offlineimap
      - graphviz
-     - epydoc
      - mercurial
      - darcs
      - fedpkg
@@ -66,7 +64,6 @@
      - fbreader
      - terminus-fonts
      - terminus-fonts-console
-     - git-cal
      - iotop
      - mplayer
      - ffmpeg
