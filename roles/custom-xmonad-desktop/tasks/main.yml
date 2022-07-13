@@ -16,6 +16,7 @@
       - alsa-utils
       - redshift
       - NetworkManager-tui
+      - xrandr
     state: present
 
 # TODO: make it more general, maybe use xuserrun or some systemd hack?
