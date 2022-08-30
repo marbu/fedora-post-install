@@ -8,7 +8,7 @@
       - dmenu
       - rxvt-unicode
       - alacritty
-      - xloadimage
+      - feh
       - brightnessctl
       - xscreensaver
       - pmount
