@@ -17,6 +17,7 @@
       - redshift
       - NetworkManager-tui
       - xrandr
+      - xkill
     state: present
 
 # TODO: make it more general, maybe use xuserrun or some systemd hack?
