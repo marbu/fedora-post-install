@@ -78,5 +78,10 @@
      - zbar
      - python3-qrcode
      - alacritty
+     - ShellCheck
+     - lnav
+     - goaccess
+     - GeoIP
+     - siege
     state: present
   tags: install-packages
