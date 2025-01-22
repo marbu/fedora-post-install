@@ -3,6 +3,7 @@
 - name: Install additional packages
   dnf:
     name:
+     - ripgrep
      - vim
      - gvim
      - neovim
@@ -28,6 +29,7 @@
      - datamash
      - git
      - git-annex
+     - git-lfs
      - git-delta
      - tig
      - gitk
@@ -65,7 +67,10 @@
      - terminus-fonts
      - terminus-fonts-console
      - iotop
+     - iotop-c
+     - pdf-stapler
      - mplayer
+     - mpv
      - ffmpeg
      - sox
      - gtimelog
@@ -83,5 +88,6 @@
      - goaccess
      - GeoIP
      - siege
+     - w3m
     state: present
   tags: install-packages
