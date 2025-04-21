@@ -7,7 +7,7 @@
 - name: Check that we run on Fedora
   assert:
     that:
-      - '"{{ ansible_distribution }}" == "Fedora"'
+      - ansible_distribution == "Fedora"
 
 - name: Update system
   dnf: name='*' state=latest
