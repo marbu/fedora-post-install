@@ -1,6 +1,18 @@
 ---
 
 #
+# The pass dir
+#
+
+- name: Group for the pass dir
+  group: name=passgrp gid=1008 state=present
+
+- name: The pass dir in /home
+  file: path=/home/pass state=directory
+        owner=root group=passgrp mode=2530
+  when: do_not_access_home_dir == false
+
+#
 # Create user accounts
 #
 
@@ -17,7 +29,7 @@
 - name: Create main user account
   user: name={{ main_user_name }}
         group={{ main_user_name }}
-        groups=users
+        groups=users,passgrp
         uid=1000
         home=/home/{{ main_user_name }}
         createhome={{ do_not_access_home_dir == false }}
@@ -62,3 +74,4 @@
    - music
    - podcast
    - series
+   - git
