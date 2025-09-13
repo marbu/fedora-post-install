@@ -21,12 +21,12 @@
      - gitit
      - texlive-ulem
     state: present
-  when: ansible_user == "root"
+  when: ansible_user_id == "root"
 
 - name: Set firewall_type to unknown if not defined
   set_fact:
     firewall_type: 'unknown'
-  when: ansible_user != "root" and firewall_type is undefined
+  when: ansible_user_id != "root" and firewall_type is undefined
 
 # TODO: test and tweak this task
 - name: Restrict local access to gitit port (iptables)
@@ -39,10 +39,10 @@
    - iptables
   notify:
    - restart iptables
-  when: firewall_type == "iptables" and ansible_user == "root"
+  when: firewall_type == "iptables" and ansible_user_id == "root"
 
 - name: Restrict local access to gitit port (firewalld)
-  when: firewall_type == "firewalld" and ansible_user == "root"
+  when: firewall_type == "firewalld" and ansible_user_id == "root"
   block:
 
    - name: Get direct rules
@@ -114,4 +114,4 @@
         name: gitit
         enabled: yes
         user: yes
-      when: ansible_user != "root"
+      when: ansible_user_id != "root"

@@ -7,7 +7,7 @@
       - mpc
       - ncmpc
     state: present
-  when: ansible_user == "root"
+  when: ansible_user_id == "root"
 
 - assert:
     that:
@@ -64,7 +64,7 @@
         name: mpd
         enabled: yes
         user: yes
-      when: ansible_user != "root"
+      when: ansible_user_id != "root"
 
   become: True
   become_user: "{{ mpd_username}}"
