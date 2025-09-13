@@ -8,8 +8,6 @@
   register: rpm_q_lightdm
   changed_when: False
   failed_when: rpm_q_lightdm.rc > 1
-  args:
-    warn: False
 
 - name: Disable lightdm if needed
   service: name=lightdm enabled=no
