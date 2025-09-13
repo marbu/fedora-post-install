@@ -12,10 +12,6 @@
    - etckeeper
    - fedora-common
    - firewall
-   - role: sshd
-     ssh_allow_users:
-      - root
-      - martin
    - user-root
    - role: users
      main_user_name: martin
